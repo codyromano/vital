@@ -1,38 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import BufferLoader from '../../utils/BufferLoader';
+import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils'
 
-let context, bufferLoader;
+async function init() {
+	try {
+		const audioContext = new (AudioContext || webkitAudioContext)();
+		const audioData = await getDecodedAudioDataFromUrl(
+			audioContext,
+			'./sounds/tycho-a-walk.wav'
+		);
+		const source = connectNewBufferSource(audioContext, audioData);
+		source.start(0);
 
-function init() {
-  context = new (AudioContext || webkitAudioContext)();
-
-  bufferLoader = new BufferLoader(
-    context,
-    [
-      './sounds/tycho-a-walk.wav'
-    ],
-    finishedLoading
-   );
-  bufferLoader.load();
-}
-
-const store = {
-  speed: 0.5
-};
-
-let source1;
-
-function finishedLoading(bufferList) {
-  // Create two sources and play them both together.
-  source1 = context.createBufferSource();
-
-
-  source1.playbackRate.value = store.speed;
-
-  source1.buffer = bufferList[0];
-  source1.connect(context.destination);
-  source1.start(0);
+	} catch(err) {
+		console.error(err);
+	}
 }
 
 export default class App extends React.Component {

@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: "./script/index.js",
+  entry: ["babel-polyfill", "./script/index.js"],
   output: {
     path: __dirname,
     publicPath: "/public/", 
@@ -11,6 +11,12 @@ module.exports = {
     contentBase: path.join(__dirname, "public"),
     compress: true,
     port: 9000
+  },
+  resolve: {
+    alias: {
+      'vital-components': path.resolve(__dirname, 'script/components/'),
+      'vital-utils': path.resolve(__dirname, 'script/utils/')
+    }
   },
   module: {
     rules: [
