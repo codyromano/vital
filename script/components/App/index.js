@@ -6,14 +6,33 @@ import withAudioSource from 'vital-components/withAudioSource';
 class App extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.changeSpeed = this.changeAudioSourceProperty.bind(this, 'speed');
   }
   componentDidMount() {
     this.props.audioSource.start();
   }
+  changeAudioSourceProperty(property, value) {
+    switch (property) {
+      case 'speed':
+        this.props.audioSource.playbackRate.value = value;
+      break;
+    }
+  }
   render() {
     return (
       <div>
-        <Range onValueChanged={(value) => console.log(value)}/>
+        <fieldset>
+          <label>Speed</label>
+          <Range
+            onValueChanged={this.changeSpeed}
+            inputSettings={{
+              defaultValue: 1.5,
+              max: 3.0,
+              min: 0.0,
+              step: 0.01
+            }}
+          />
+        </fieldset>
       </div>
     );
   }
