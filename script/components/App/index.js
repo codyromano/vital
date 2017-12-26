@@ -22,7 +22,7 @@ class App extends React.Component {
     return (
       <div>
         <fieldset>
-          <label>Speed</label>
+          <label>Transaction volume</label>
           <Range
             onValueChanged={this.changeSpeed}
             inputSettings={{
