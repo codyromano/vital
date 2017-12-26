@@ -1,29 +1,25 @@
 import React from 'react';
-import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils'
+import PropTypes from 'prop-types';
+import Range from 'vital-components/Range';
+import withAudioSource from 'vital-components/withAudioSource';
 
-async function init() {
-	try {
-		const audioContext = new (AudioContext || webkitAudioContext)();
-		const audioData = await getDecodedAudioDataFromUrl(
-			audioContext,
-			'./sounds/tycho-a-walk.wav'
-		);
-		const source = connectNewBufferSource(audioContext, audioData);
-		source.start(0);
-
-	} catch(err) {
-		console.error(err);
-	}
+class App extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+  }
+  componentDidMount() {
+    this.props.audioSource.start();
+  }
+  render() {
+    return (
+      <div>
+        <Range onValueChanged={(value) => console.log(value)}/>
+      </div>
+    );
+  }
 }
 
-export default class App extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-		init();
-	}
-	render() {
-		return (
-			<div>Maiasdfn app</div>
-		);
-	}
-}
+export default withAudioSource({
+  audioContext: new (AudioContext || webkitAudioContext)(),
+  sourceUrl: './sounds/tycho-a-walk.wav'
+})(App);
