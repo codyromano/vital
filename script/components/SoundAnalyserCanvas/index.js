@@ -20,8 +20,7 @@ export default class SoundAnalyserCanvas extends React.Component {
 	updateAudioContextAnalyser() {
 		this.bufferLength = this.analyser.frequencyBinCount;
 		this.dataArray = new Uint8Array(this.bufferLength);
-		// this.analyser.getByteTimeDomainData(this.dataArray);
-		this.analyser.getByteFrequencyData(this.dataArray);
+		this.analyser.getByteTimeDomainData(this.dataArray);
 	}
 
 	configureCanvas() {
@@ -39,19 +38,18 @@ export default class SoundAnalyserCanvas extends React.Component {
 	  	this.canvasElement.height
 	  );
 
-	  this.canvasContext.lineWidth = 1;
-	  this.canvasContext.strokeStyle = 'cornflowerblue';
+	  this.canvasContext.lineWidth = 2;
+	  this.canvasContext.strokeStyle = '#fff';
 
 	  this.canvasContext.beginPath();
 
-	  var sliceWidth = this.canvasElement.width * 1.0 / this.bufferLength;
+	  const sliceWidth = this.canvasElement.width * 1.0 / this.bufferLength;
 
-	  var x = 0;
+	  let x = 0;
 
 	  for (var i = 0; i < this.analyser.frequencyBinCount; i++) {
-	    // var v = this.dataArray[i] / 128.0;
-	    var v = (this.dataArray[i] / 128.0) * Math.random();
-	    var y = v * this.canvasElement.height / 2;
+	    const v = this.dataArray[i] / 128.0;
+	    const y = v * this.canvasElement.height / 2;
 
 	    if (i === 0) {
 	      this.canvasContext.moveTo(x, y);
@@ -59,12 +57,12 @@ export default class SoundAnalyserCanvas extends React.Component {
 	      this.canvasContext.lineTo(x, y);
 	    }
 
-	    x += sliceWidth;
+	    x+= sliceWidth;
 	  }
 
 	  this.canvasContext.lineTo(
 	  	this.canvasElement.width,
-	  	this.canvasElement.height / 2
+	  	this.canvasElement.height
 	  );
 	  this.canvasContext.stroke();
 	}
