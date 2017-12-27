@@ -21,6 +21,7 @@ const withAudioSource = ({ audioContext, sourceUrl }) => (Component) => {
         <Component
           {...this.props}
           audioSource={this.state.source}
+          audioContext={audioContext}
         />
       );
     }

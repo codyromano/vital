@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Range from 'vital-components/Range';
 import withAudioSource from 'vital-components/withAudioSource';
+import SoundAnalyserCanvas from 'vital-components/SoundAnalyserCanvas';
+import './App.scss';
 
 class App extends React.Component {
   constructor(props, context) {
@@ -10,6 +12,7 @@ class App extends React.Component {
   }
   componentDidMount() {
     this.props.audioSource.start();
+    this.props.audioSource.frequency = 1000;
   }
   changeAudioSourceProperty(property, value) {
     switch (property) {
@@ -21,8 +24,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <SoundAnalyserCanvas
+          audioContext={this.props.audioContext}
+          audioSource={this.props.audioSource}
+        />
         <fieldset>
-          <label>Transaction volume</label>
+          <label>Speed</label>
           <Range
             onValueChanged={this.changeSpeed}
             inputSettings={{
@@ -40,5 +47,5 @@ class App extends React.Component {
 
 export default withAudioSource({
   audioContext: new (AudioContext || webkitAudioContext)(),
-  sourceUrl: './sounds/tycho-a-walk.wav'
+  sourceUrl: './sounds/louis-ck.wav'
 })(App);
