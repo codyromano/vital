@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './soundAnalyserCanvas.scss';
+import generateWaveFormColor from './generateRandomShiftingWaveFormColor';
 
 // Used to determine frequency domain
 const fastFourierTransformSetting = 2048;
@@ -38,8 +39,14 @@ export default class SoundAnalyserCanvas extends React.Component {
 	  	this.canvasElement.height
 	  );
 
-	  this.canvasContext.lineWidth = 2;
-	  this.canvasContext.strokeStyle = '#fff';
+    console.log(this.canvasElement.height, ' by ',
+      this.canvasElement.width);
+
+	  this.canvasContext.lineWidth = this.props.lineWidth;
+    this.canvasContext.strokeStyle = this.props.generateWaveFormColor(
+      this.analyser,
+      this.dataArray
+    );
 
 	  this.canvasContext.beginPath();
 
@@ -84,11 +91,22 @@ export default class SoundAnalyserCanvas extends React.Component {
 	}
 }
 
+SoundAnalyserCanvas.defaultProps = {
+  generateWaveFormColor,
+  lineWidth: 1
+};
+
 SoundAnalyserCanvas.propTypes = {
+  /**
+  * Invoked with each animation frame. Determines color of
+  * waveform.
+  */
+  generateWaveFormColor: PropTypes.func,
 	audioSource: PropTypes.shape({
 		connect: PropTypes.func.isRequired
 	}).isRequired,
 	audioContext: PropTypes.shape({
 		createAnalyser: PropTypes.func.isRequired
-	}).isRequired
+	}).isRequired,
+  lineWidth: PropTypes.number
 };

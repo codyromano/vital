@@ -25,6 +25,7 @@ class App extends React.Component {
     return (
       <div>
         <SoundAnalyserCanvas
+          lineWidth={2}
           audioContext={this.props.audioContext}
           audioSource={this.props.audioSource}
         />
@@ -47,5 +48,5 @@ class App extends React.Component {
 
 export default withAudioSource({
   audioContext: new (AudioContext || webkitAudioContext)(),
-  sourceUrl: './sounds/louis-ck.wav'
+  sourceUrl: './sounds/tycho-a-walk.wav'
 })(App);
