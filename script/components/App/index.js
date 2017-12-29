@@ -14,6 +14,10 @@ class App extends React.Component {
     this.props.audioSource.start();
     this.props.audioSource.frequency = 1000;
   }
+  componentWillUnmount() {
+    this.props.audioSource.stop();
+    delete this.changeSpeed;
+  }
   changeAudioSourceProperty(property, value) {
     switch (property) {
       case 'speed':
