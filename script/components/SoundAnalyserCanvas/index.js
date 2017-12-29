@@ -12,6 +12,17 @@ export default class SoundAnalyserCanvas extends React.Component {
 		this.draw = this.draw.bind(this);
 	}
 
+  componentWillUnmount() {
+    this._mounted = false;
+
+    // Release DOM resources to prevent memory leaks
+    delete this.analyser;
+    delete this.bufferLength;
+    delete this.dataArray;
+    delete this.canvasContext;
+    delete this.canvasElement;
+  }
+
 	configureAudioContextAnalyser(audioContext) {
 		this.analyser = audioContext.createAnalyser();
 		this.analyser.fftSize = fastFourierTransformSetting;
@@ -29,6 +40,10 @@ export default class SoundAnalyserCanvas extends React.Component {
 	}
 
 	draw() {
+    if (!this._mounted) {
+      return false;
+    }
+
 	  window.requestAnimationFrame(this.draw);
 
 	  this.updateAudioContextAnalyser();
@@ -37,7 +52,7 @@ export default class SoundAnalyserCanvas extends React.Component {
       this.analyser,
       this.dataArray
     );
-    
+
 	  this.canvasContext.fillRect(0, 0,
 	  	this.canvasElement.width,
 	  	this.canvasElement.height
@@ -76,6 +91,8 @@ export default class SoundAnalyserCanvas extends React.Component {
 	}
 
 	componentDidMount() {
+    this._mounted = true;
+
 		this.configureAudioContextAnalyser(this.props.audioContext);
 		this.configureCanvas();
 
