@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Form from 'vital-components/Form';
+import fieldsDefinition from './formDefinition';
 import './ConfigureMusicPage.scss';
 
 export default class ConfigureMusicPage extends React.Component {
@@ -10,9 +12,7 @@ export default class ConfigureMusicPage extends React.Component {
   }
   render() {
     return (
-      <div>
-        Configure music
-      </div>
+      <Form fields={fieldsDefinition} />
     );
   }
 }
