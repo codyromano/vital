@@ -33,14 +33,15 @@ export default class SoundAnalyserCanvas extends React.Component {
 
 	  this.updateAudioContextAnalyser();
 
-	  this.canvasContext.fillStyle = '#000';
+	  this.canvasContext.fillStyle = this.props.generateBackgroundColor(
+      this.analyser,
+      this.dataArray
+    );
+    
 	  this.canvasContext.fillRect(0, 0,
 	  	this.canvasElement.width,
 	  	this.canvasElement.height
 	  );
-
-    console.log(this.canvasElement.height, ' by ',
-      this.canvasElement.width);
 
 	  this.canvasContext.lineWidth = this.props.lineWidth;
     this.canvasContext.strokeStyle = this.props.generateWaveFormColor(
@@ -95,6 +96,7 @@ export default class SoundAnalyserCanvas extends React.Component {
 
 SoundAnalyserCanvas.defaultProps = {
   generateWaveFormColor,
+  generateBackgroundColor: () => '#000',
   lineWidth: 1
 };
 
@@ -103,6 +105,7 @@ SoundAnalyserCanvas.propTypes = {
   * Invoked with each animation frame. Determines color of
   * waveform.
   */
+  generateBackgroundColor: PropTypes.func, 
   generateWaveFormColor: PropTypes.func,
 	audioSource: PropTypes.shape({
 		connect: PropTypes.func.isRequired
