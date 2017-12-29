@@ -48,5 +48,5 @@ class App extends React.Component {
 
 export default withAudioSource({
   audioContext: new (AudioContext || webkitAudioContext)(),
-  sourceUrl: './sounds/tycho-a-walk.wav'
+  sourceUrl: './sounds/give-her-right-back.wav'
 })(App);

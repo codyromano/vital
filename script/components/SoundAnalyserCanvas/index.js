@@ -84,6 +84,8 @@ export default class SoundAnalyserCanvas extends React.Component {
 	render() {
 		return (
 			<canvas
+        width={1000}
+        height={800}
 				className="sound-analyser-canvas"
 				ref={(canvasElement) => { this.canvasElement = canvasElement; }}
 			/>
