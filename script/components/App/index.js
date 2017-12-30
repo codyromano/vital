@@ -33,18 +33,6 @@ export default class App extends React.Component {
           audioContext={this.props.audioContext}
           audioSource={this.props.audioSource}
         />
-        <fieldset>
-          <label>Speed</label>
-          <Range
-            onValueChanged={this.changeSpeed}
-            inputSettings={{
-              defaultValue: 1.5,
-              max: 3.0,
-              min: 0.0,
-              step: 0.01
-            }}
-          />
-        </fieldset>
       </div>
     );
   }

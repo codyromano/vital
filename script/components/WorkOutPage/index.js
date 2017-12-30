@@ -3,28 +3,162 @@ import PropTypes from 'prop-types';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import withAudioSource from 'vital-components/withAudioSource';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
-
+import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils'
 // TODO: Change name to 'Visualization' or similar
-import App from 'vital-components/App';
+import Visualiser from 'vital-components/App';
 import './WorkOutPage.scss';
+
+// TODO: Move to component file
+import './SpeedDisplay.scss';
+
+// TODO: Move to component file
+const MetricDisplay = ({ overdrive, metric, unit, precision = 2 }) => {
+  if (typeof metric === 'number') {
+    metric = metric.toFixed(precision);
+  }
+  const classList = ['speed-display'];
+  if (overdrive) {
+    classList.push('speed-display-overdrive');
+  }
+
+  return (
+    <div className={classList.join(' ')}>
+      {metric}<small>{unit}</small>
+    </div>
+  );
+};
+
+async function getAudioDataSource(audioContext, sourceUrl) {
+  const audioData = await getDecodedAudioDataFromUrl(
+  audioContext, sourceUrl);
+
+  return connectNewBufferSource(audioContext, audioData);
+}
+
+// TODO: Let listeners unsubscribe
+function onGeolocationChange(callback) {
+  window.setInterval(() => {
+
+    // TODO: Use haversine
+    const mockLatitude = 32.33444;
+    const mockLongitude = 32.3332;
+
+    callback(mockLatitude, mockLongitude);
+  }, 1000);
+}
+
+// TODO: Move module to its own folder
+class GeolocationModel {
+  constructor() {
+    this.coordinates = [];
+
+    this.mockMPH = 0.1;
+    this.mockMPHStep = 0.15;
+  }
+  addLocation(latitude, longitude) {
+    this.coordinates.push({ latitude, longitude });
+  }
+  // TODO: What exactly does current mean?
+  getCurrentMilesPerHour() {
+    this.mockMPH+= this.mockMPHStep;
+    return this.mockMPH;
+  }
+}
+
+const geolocationModel = new GeolocationModel();
 
 export default class WorkOutPage extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.audioContext = new (AudioContext || webkitAudioContext)();
+    this.audioSource = null;
 
     this.state = {
-      VisualiserComponent: withAudioSource({
-        audioContext: new (AudioContext || webkitAudioContext)(),
-        sourceUrl: sharedMusicPreferencesModel.getSongSource()
-      })(App)
+      currentMilesPerHour: 0,
+      playbackRate: 0,
+      maxPlaybackRate: false
     };
+    this.updateMusicOnGeolocationChange = this.updateMusicOnGeolocationChange.bind(this);
+  }
+
+  updateMusicOnGeolocationChange() {
+    onGeolocationChange((latitude, longitude) => {
+      // TODO: Clean this up
+      if (!this.audioSource) {
+        return;
+      }
+
+      geolocationModel.addLocation({ latitude, longitude });
+
+      const currentMilesPerHour = geolocationModel.getCurrentMilesPerHour();
+      const playbackRate = sharedMusicPreferencesModel
+        .mapMilesPerHourToSongSpeed(currentMilesPerHour);
+
+      this.audioSource.playbackRate.value = playbackRate;
+
+      console.log(playbackRate, sharedMusicPreferencesModel.maximumSpeed);
+
+      this.setState({
+        currentMilesPerHour,
+        playbackRate,
+        // TODO: Calculate this
+        // maxPlaybackRate: true
+        maxPlaybackRate: sharedMusicPreferencesModel.maximumSpeed === playbackRate
+      });
+
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.audioSource.stop();
+  }
+
+  loadAudio() {
+    const sourceUrl = sharedMusicPreferencesModel.getSongSource();
+
+    getAudioDataSource(this.audioContext, sourceUrl).then(
+      (audioSource) => {
+        this.audioSource = audioSource;
+        this.forceUpdate();
+      }
+    );
+  }
+  componentDidMount() {
+    this.loadAudio();
+    this.updateMusicOnGeolocationChange();
+  }
+  componentWillReceiveProps() {
+    this.loadAudio();
   }
   render() {
-    const Visualiser = this.state.VisualiserComponent;
+    // TODO: Make loading component
+    if (!this.audioSource) {
+      return (<div>Loading audio</div>);
+    }
+
+    const overdrive = this.state.maxPlaybackRate;
+    const speedMetric = overdrive ? 'MAX' : this.state.playbackRate * 100;
+    const speedUnit = overdrive ? '' : '%';
 
     return (
       <BasePage>
-        <Visualiser />
+        <div className="metric-dashboard">
+          <MetricDisplay
+            metric={this.state.currentMilesPerHour}
+            unit={'mph'}
+          />
+          <MetricDisplay
+            precision={0}
+            metric={speedMetric}
+            unit={speedUnit}
+            overdrive={overdrive}
+          />
+        </div>
+        <Visualiser
+          audioContext={this.audioContext}
+          audioSource={this.audioSource}
+        />
       </BasePage>
     );
   }

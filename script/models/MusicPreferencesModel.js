@@ -3,12 +3,25 @@ import BaseModel from 'vital-models/BaseModel';
 export default class MusicPreferencesModel extends BaseModel {
   constructor() {
     super();
-    this.defaultMinimumSpeed = 0.5;
-    this.defaultMaximumSpeed = 3;
 
-    this.songSource = null;
+    this.defaultSongSource = './sounds/tycho-a-walk.wav';
+    this.defaultMinimumSpeed = 0.5;
+    this.defaultMaximumSpeed = 1.20;
+
+    this.songSource = this.defaultSongSource;
     this.minimumSpeed = this.defaultMinimumSpeed;
     this.maximumSpeed = this.defaultMaximumSpeed;
+
+    this.targetMilesPerHour = 10;
+  }
+  currentProgress(milesPerHour) {
+    const percentOfMaximumSpeedAchieved = Math.min(
+      1, milesPerHour / this.targetMilesPerHour
+    );
+    return percentOfMaximumSpeedAchieved;
+  }
+  mapMilesPerHourToSongSpeed(milesPerHour) {
+    return this.maximumSpeed * this.currentProgress(milesPerHour);
   }
   updateSongSource(newSource) {
     this.songSource = newSource;

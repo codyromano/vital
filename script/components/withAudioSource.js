@@ -10,11 +10,22 @@ const withAudioSource = ({ audioContext, sourceUrl }) => (Component) => {
         source: null
       };
     }
-    async componentDidMount() {
-      const audioData = await getDecodedAudioDataFromUrl(audioContext, sourceUrl);
-      const source = connectNewBufferSource(audioContext, audioData);
-
-      this.setState({ source });
+    async getAudioDataSource(newAudioContext, newSourceUrl) {
+      console.log(newAudioContext, newSourceUrl);
+      
+      if (newAudioContext && newSourceUrl) {
+        const audioData = await getDecodedAudioDataFromUrl(
+          newAudioContext, newSourceUrl);
+        const source = connectNewBufferSource(
+          newAudioContext, audioData);
+        this.setState({ source });
+      }
+    }
+    componentWillReceiveProps(newProps) {
+      this.getAudioDataSource(newProps.audioContext, newProps.sourceUrl);
+    }
+    componentDidMount() {
+      this.getAudioDataSource(this.props.audioContext, this.props.sourceUrl);
     }
     render() {
       return this.state.source && (
