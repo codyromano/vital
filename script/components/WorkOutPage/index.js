@@ -3,30 +3,12 @@ import PropTypes from 'prop-types';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import withAudioSource from 'vital-components/withAudioSource';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
-import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils'
+import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
+import MetricDisplay from 'vital-components/MetricDisplay';
+
 // TODO: Change name to 'Visualization' or similar
 import Visualiser from 'vital-components/App';
 import './WorkOutPage.scss';
-
-// TODO: Move to component file
-import './SpeedDisplay.scss';
-
-// TODO: Move to component file
-const MetricDisplay = ({ overdrive, metric, unit, precision = 2 }) => {
-  if (typeof metric === 'number') {
-    metric = metric.toFixed(precision);
-  }
-  const classList = ['speed-display'];
-  if (overdrive) {
-    classList.push('speed-display-overdrive');
-  }
-
-  return (
-    <div className={classList.join(' ')}>
-      {metric}<small>{unit}</small>
-    </div>
-  );
-};
 
 async function getAudioDataSource(audioContext, sourceUrl) {
   const audioData = await getDecodedAudioDataFromUrl(

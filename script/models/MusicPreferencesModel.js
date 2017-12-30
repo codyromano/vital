@@ -5,14 +5,14 @@ export default class MusicPreferencesModel extends BaseModel {
     super();
 
     this.defaultSongSource = './sounds/tycho-a-walk.wav';
-    this.defaultMinimumSpeed = 0.5;
+    this.defaultMinimumSpeed = 0.25;
     this.defaultMaximumSpeed = 1.20;
 
     this.songSource = this.defaultSongSource;
     this.minimumSpeed = this.defaultMinimumSpeed;
     this.maximumSpeed = this.defaultMaximumSpeed;
 
-    this.targetMilesPerHour = 10;
+    this.targetMilesPerHour = 12;
   }
   currentProgress(milesPerHour) {
     const percentOfMaximumSpeedAchieved = Math.min(
