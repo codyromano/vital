@@ -19,14 +19,19 @@ async function getAudioDataSource(audioContext, sourceUrl) {
 
 // TODO: Let listeners unsubscribe
 function onGeolocationChange(callback) {
-  window.setInterval(() => {
+  const onGeolocationSuccess = (position) => {
+    const { latitude, longitude } = position.coords;
+    callback(latitude, longitude);
+  };
 
-    // TODO: Use haversine
-    const mockLatitude = 32.33444;
-    const mockLongitude = 32.3332;
+  const onGeolocationError = (...errorArgs) => {
+    console.error('Error determining geoposition. ', errorArgs);
+  };
 
-    callback(mockLatitude, mockLongitude);
-  }, 1000);
+  window.navigator.geolocation.watchPosition(
+    onGeolocationSuccess,
+    onGeolocationError
+  );
 }
 
 // TODO: Move module to its own folder
@@ -35,7 +40,7 @@ class GeolocationModel {
     this.coordinates = [];
 
     this.mockMPH = 0.1;
-    this.mockMPHStep = 0.15;
+    this.mockMPHStep = 0.25;
   }
   addLocation(latitude, longitude) {
     this.coordinates.push({ latitude, longitude });
@@ -78,13 +83,9 @@ export default class WorkOutPage extends React.Component {
 
       this.audioSource.playbackRate.value = playbackRate;
 
-      console.log(playbackRate, sharedMusicPreferencesModel.maximumSpeed);
-
       this.setState({
         currentMilesPerHour,
         playbackRate,
-        // TODO: Calculate this
-        // maxPlaybackRate: true
         maxPlaybackRate: sharedMusicPreferencesModel.maximumSpeed === playbackRate
       });
 
