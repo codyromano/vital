@@ -15,7 +15,9 @@ module.exports = {
   resolve: {
     alias: {
       'vital-components': path.resolve(__dirname, 'script/components/'),
-      'vital-utils': path.resolve(__dirname, 'script/utils/')
+      'vital-utils': path.resolve(__dirname, 'script/utils/'),
+      'vital-shared-styles': path.resolve(__dirname, 'script/shared-styles/'),
+      'vital-models': path.resolve(__dirname, 'script/models/')
     }
   },
   module: {

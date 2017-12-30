@@ -33,7 +33,7 @@ export default class Range extends React.Component {
 	render() {
 		return (
 			<input
-				onChange={this.onChange}
+				onChange={({ target }) => this.props.onUpdateValue(target.value) }
 				type="range"
 				className="range"
 				{...this.props.inputSettings}

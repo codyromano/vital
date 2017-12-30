@@ -1,1 +1,5 @@
-// Add style
+@import '../../shared-styles/index';
+
+.form-field-label {
+  color: $color-accent;
+}

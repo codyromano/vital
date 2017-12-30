@@ -6,14 +6,21 @@ const FormField = ({
   label,
   options,
   optionComponent,
-  optionComponentProps
+  optionComponentProps,
+  onUpdateValue
 }) => {
   const FieldOptionComponent = optionComponent;
 
-  return (<fieldset>
-      <legend>{label}</legend>
+  return (<fieldset className="form-field">
+      <legend className="form-field-label">
+        {label}
+      </legend>
       {optionComponentProps.map((optionProps, index) => (
-        <FieldOptionComponent key={index} {...optionProps} />
+        <FieldOptionComponent
+          key={index}
+          {...optionProps}
+          onUpdateValue={onUpdateValue}
+        />
       ))}
   </fieldset>)
 };
@@ -21,10 +28,12 @@ const FormField = ({
 export default FormField;
 
 export const fieldShape = PropTypes.shape({
+  id: PropTypes.string.isRequired,
   label: PropTypes.string,
   optionComponent: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.node
   ]).isRequired,
-  optionComponentProps: PropTypes.array.isRequired
+  optionComponentProps: PropTypes.array.isRequired,
+  // onUpdateValue: PropTypes.func.isRequired
 });

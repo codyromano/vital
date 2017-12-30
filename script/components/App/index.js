@@ -15,6 +15,8 @@ class App extends React.Component {
     this.props.audioSource.frequency = 1000;
   }
   componentWillUnmount() {
+    // TODO: Uncomment lines below
+    
     // this.props.audioSource.stop();
     // delete this.changeSpeed;
   }
@@ -52,5 +54,5 @@ class App extends React.Component {
 
 export default withAudioSource({
   audioContext: new (AudioContext || webkitAudioContext)(),
-  sourceUrl: './sounds/give-her-right-back.wav'
+  sourceUrl: './sounds/tycho-a-walk.wav'
 })(App);
