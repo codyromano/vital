@@ -6,7 +6,7 @@ import fieldsDefinition from './formDefinition';
 import './ConfigureMusicPage.scss';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
 
-const mapFieldIdToUpdateMethod = {
+const mapFieldIdToModelUpdateMethod = {
   'song': sharedMusicPreferencesModel.updateSongSource,
   'maxSpeed': sharedMusicPreferencesModel.updateSongMaximumSpeed,
   'minSpeed': sharedMusicPreferencesModel.updateSongMinimumSpeed
@@ -18,7 +18,7 @@ export default class ConfigureMusicPage extends React.Component {
     this.onUpdateFieldValue = this.onUpdateFieldValue.bind(this);
   }
   onUpdateFieldValue(fieldId, fieldValue) {
-    const updateFn = mapFieldIdToUpdateMethod[fieldId];
+    const updateFn = mapFieldIdToModelUpdateMethod[fieldId];
     updateFn.call(sharedMusicPreferencesModel, fieldValue);
   }
   componentDidMount() {
