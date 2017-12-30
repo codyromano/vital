@@ -19,6 +19,9 @@ export default class MusicPreferencesModel extends BaseModel {
   updateSongMaximumSpeed(newSpeed) {
     this.maximumSpeed = newSpeed;
   }
+  getSongSource() {
+    return this.songSource;
+  }
   getMinimumSpeed() {
     return this.defaultMinimumSpeed;
   }
