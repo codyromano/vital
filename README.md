@@ -1,3 +1,3 @@
 # Vital
 
-Generate a musical symphony based on the real-time trading behavior in global financial markets
+Increases the intensity of your workout playlist as you run faster (using GPS and realtime audio filtering)
