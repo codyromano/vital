@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vital
+  labels:
+    app: vital
+spec:
+  selector:
+    app: vital
+  ports:
+  - port: 8080
+    protocol: TCP
+    nodePort: 30061
+  type: LoadBalancer

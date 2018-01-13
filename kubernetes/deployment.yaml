@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: vital
+  labels:
+    name: vital
+    app: vital
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: vital
+        app: vital
+    spec:
+      containers:
+      - name: vital
+        image: codyromano/vital:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          protocol: TCP
