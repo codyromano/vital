@@ -60,9 +60,13 @@ export default class WorkOutPage extends React.Component {
     this.audioContext = new (AudioContext || webkitAudioContext)();
     this.audioSource = null;
 
+    const initialMilesPerHour = 0;
+
     this.state = {
       currentMilesPerHour: 0,
-      playbackRate: 0,
+      playbackRate: sharedMusicPreferencesModel.mapMilesPerHourToSongSpeed(
+        initialMilesPerHour
+      ),
       maxPlaybackRate: false
     };
     this.updateMusicOnGeolocationChange = this.updateMusicOnGeolocationChange.bind(this);

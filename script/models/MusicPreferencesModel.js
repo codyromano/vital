@@ -21,7 +21,10 @@ export default class MusicPreferencesModel extends BaseModel {
     return percentOfMaximumSpeedAchieved;
   }
   mapMilesPerHourToSongSpeed(milesPerHour) {
-    return this.maximumSpeed * this.currentProgress(milesPerHour);
+    return Math.max(
+      this.minimumSpeed,
+      this.maximumSpeed * this.currentProgress(milesPerHour)
+    );
   }
   updateSongSource(newSource) {
     this.songSource = newSource;
