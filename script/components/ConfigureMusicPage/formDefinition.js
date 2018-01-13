@@ -23,21 +23,33 @@ const SongOption = ({
 export default [
   {
     id: 'song',
-    label: 'Choose an electronic song',
+    label: 'Choose an EDM mix',
     optionComponent: SongOption,
     optionComponentProps: [
       {
         optionId: 1,
         name: 'songOption',
-        title: 'Give Her Right Back',
-        source: './sounds/give-her-right-back.wav'
+        title: 'Deadmau5 ultimate club mix',
+        source: 'https://storage.cloud.google.com/databassio/deadmau5-club-mix.mp3'
       },
       {
         optionId: 2,
         name: 'songOption',
+        title: 'Extreme Bass Boost',
+        source: 'https://storage.cloud.google.com/databassio/extreme-bass-boost.mp3'
+      },
+      {
+        optionId: 3,
+        name: 'songOption',
         title: 'A Walk',
         source: './sounds/tycho-a-walk.wav'
-      }
+      },
+      {
+        optionId: 4,
+        name: 'songOption',
+        title: 'When will the bass drop?',
+        source: 'https://storage.cloud.google.com/databassio/bass-drop.wav'
+      },
     ]
   },
   {
