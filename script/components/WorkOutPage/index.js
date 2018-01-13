@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import withAudioSource from 'vital-components/withAudioSource';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
+import GeolocationModel from 'vital-models/GeolocationModel';
 import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
 import MetricDisplay from 'vital-components/MetricDisplay';
 
@@ -32,24 +33,6 @@ function onGeolocationChange(callback) {
     onGeolocationSuccess,
     onGeolocationError
   );
-}
-
-// TODO: Move module to its own folder
-class GeolocationModel {
-  constructor() {
-    this.coordinates = [];
-
-    this.mockMPH = 0.1;
-    this.mockMPHStep = 0.25;
-  }
-  addLocation(latitude, longitude) {
-    this.coordinates.push({ latitude, longitude });
-  }
-  // TODO: What exactly does current mean?
-  getCurrentMilesPerHour() {
-    this.mockMPH+= this.mockMPHStep;
-    return this.mockMPH;
-  }
 }
 
 const geolocationModel = new GeolocationModel();
