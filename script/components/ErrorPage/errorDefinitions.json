@@ -1,0 +1,12 @@
+{
+  "default": {
+    "message": "Sorry, an unknown error occurred.",
+    "nextStepButtonText": "Go home",
+    "nextStepButtonUrl": "/configure-music"
+  },
+  "music-load": {
+    "message": "Whoops...there was a problem loading that song.",
+    "nextStepButtonText": "Try a different song",
+    "nextStepButtonUrl": "/configure-music"
+  }
+}

@@ -112,9 +112,9 @@ export default class SoundAnalyserCanvas extends React.Component {
 }
 
 SoundAnalyserCanvas.defaultProps = {
-  generateWaveFormColor,
-  generateBackgroundColor: () => '#000',
-  lineWidth: 1
+  generateWaveFormColor: () => '#fff',
+  generateBackgroundColor: () => '#c0392b',
+  lineWidth: 50
 };
 
 SoundAnalyserCanvas.propTypes = {

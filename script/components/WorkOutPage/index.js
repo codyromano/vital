@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import withAudioSource from 'vital-components/withAudioSource';
@@ -37,7 +38,7 @@ function onGeolocationChange(callback) {
 
 const geolocationModel = new GeolocationModel();
 
-export default class WorkOutPage extends React.Component {
+class WorkOutPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.audioContext = new (AudioContext || webkitAudioContext)();
@@ -82,7 +83,10 @@ export default class WorkOutPage extends React.Component {
 
   componentWillUnmount() {
     this.mounted = false;
-    this.audioSource.stop();
+    
+    if (this.audioSource) {
+      this.audioSource.stop();
+    }
   }
 
   loadAudio() {
@@ -90,8 +94,12 @@ export default class WorkOutPage extends React.Component {
 
     getAudioDataSource(this.audioContext, sourceUrl).then(
       (audioSource) => {
-        this.audioSource = audioSource;
-        this.forceUpdate();
+        if (audioSource.buffer) {
+          this.audioSource = audioSource;
+          this.forceUpdate();
+        } else {
+          this.props.history.push('/error/music-load');
+        }
       }
     );
   }
@@ -136,3 +144,6 @@ export default class WorkOutPage extends React.Component {
     );
   }
 }
+
+export default withRouter(WorkOutPage);
+
