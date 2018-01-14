@@ -1,7 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Abel');
 
-$color-accent: cornflowerblue;
+$color-accent: rgb(57, 201, 214);
 
 $font-size-small: 1rem;
 $font-size-regular: 1.25rem;
 $font-size-large: 1.5rem;
+
+$padding-row-small: 0.5rem;
+$padding-row-regular: 1rem;
+$padding-row-large: 2rem;
+
+$padding-column-small: 0.5rem;
+$padding-column-regular: 1rem;
+$padding-column-large: 2rem;
+
+// Simple reset (Not every performant)
+* {
+  margin: 0;
+  padding: 0;
+}

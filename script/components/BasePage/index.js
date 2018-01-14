@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AppHeader from 'vital-components/AppHeader';
 import './BasePage.scss';
 
 export const PageWidthContainer = ({ children }) => (
@@ -15,7 +16,10 @@ export default class BasePage extends React.Component {
   render() {
     return (
       <main>
-        {this.props.children}
+        <AppHeader />
+        <section className="app-body">
+          {this.props.children}
+        </section>
       </main>
     );
   }

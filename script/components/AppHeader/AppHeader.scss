@@ -1,0 +1,11 @@
+@import '../../shared-styles/index';
+
+.app-header {
+  background-color: $color-accent;
+  padding: $padding-row-small $padding-column-small;
+  margin-bottom: $padding-row-regular;
+}
+.logo {
+  color: #fff;
+  font-size: $font-size-regular;
+}
