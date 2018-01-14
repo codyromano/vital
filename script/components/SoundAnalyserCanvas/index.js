@@ -102,8 +102,8 @@ export default class SoundAnalyserCanvas extends React.Component {
 	render() {
 		return (
 			<canvas
-        width={1000}
-        height={800}
+        width={this.props.width}
+        height={this.props.height}
 				className="sound-analyser-canvas"
 				ref={(canvasElement) => { this.canvasElement = canvasElement; }}
 			/>
@@ -112,8 +112,10 @@ export default class SoundAnalyserCanvas extends React.Component {
 }
 
 SoundAnalyserCanvas.defaultProps = {
-  generateWaveFormColor: () => '#fff',
-  generateBackgroundColor: () => '#c0392b',
+  width: 500,
+  height: 250,
+  generateWaveFormColor: () => 'rgb(57, 201, 214)',
+  generateBackgroundColor: () => '#fff',
   lineWidth: 50
 };
 
@@ -130,5 +132,7 @@ SoundAnalyserCanvas.propTypes = {
 	audioContext: PropTypes.shape({
 		createAnalyser: PropTypes.func.isRequired
 	}).isRequired,
-  lineWidth: PropTypes.number
+  lineWidth: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number
 };

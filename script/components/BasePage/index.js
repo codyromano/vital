@@ -16,7 +16,9 @@ export default class BasePage extends React.Component {
   render() {
     return (
       <main>
-        <AppHeader />
+        <AppHeader
+          headerBottomPadding={this.props.headerBottomPadding}
+        />
         <section className="app-body">
           {this.props.children}
         </section>
@@ -24,3 +26,11 @@ export default class BasePage extends React.Component {
     );
   }
 }
+
+BasePage.defaultProps = {
+  headerBottomPadding: true
+};
+
+BasePage.propTypes = {
+  headerBottomPadding: PropTypes.bool
+};

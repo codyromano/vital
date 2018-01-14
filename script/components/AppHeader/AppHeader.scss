@@ -3,8 +3,11 @@
 .app-header {
   background-color: $color-accent;
   padding: $padding-row-small 0;
+}
+.app-header-padding {
   margin-bottom: $padding-row-regular;
 }
+
 .logo {
   color: #fff;
   font-size: $font-size-regular;

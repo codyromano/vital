@@ -130,7 +130,8 @@ class WorkOutPage extends React.Component {
     const speedUnit = overdrive ? '' : '%';
 
     return (
-      <BasePage>
+      <BasePage headerBottomPadding={false}>
+        {/*
         <div className="metric-dashboard">
           <MetricDisplay
             metric={this.state.currentMilesPerHour}
@@ -143,6 +144,7 @@ class WorkOutPage extends React.Component {
             overdrive={overdrive}
           />
         </div>
+        */}
         <Visualiser
           audioContext={this.audioContext}
           audioSource={this.audioSource}
