@@ -70,17 +70,18 @@ export default class WorkOutPage extends React.Component {
 
       this.audioSource.playbackRate.value = playbackRate;
 
-      this.setState({
-        currentMilesPerHour,
-        playbackRate,
-        maxPlaybackRate: sharedMusicPreferencesModel.maximumSpeed === playbackRate
-      });
-
-      this.forceUpdate();
+      if (this.mounted) {
+        this.setState({
+          currentMilesPerHour,
+          playbackRate,
+          maxPlaybackRate: sharedMusicPreferencesModel.maximumSpeed === playbackRate
+        });
+      }
     });
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     this.audioSource.stop();
   }
 
@@ -95,6 +96,8 @@ export default class WorkOutPage extends React.Component {
     );
   }
   componentDidMount() {
+    this.mounted = true;
+
     this.loadAudio();
     this.updateMusicOnGeolocationChange();
   }
