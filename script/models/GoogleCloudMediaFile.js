@@ -4,7 +4,8 @@ import BaseMediaFile from 'vital-models/BaseMediaFile';
 const mapMediaFileIdToBucketFileName = {
   'bass-drop': 'bass-drop.wav',
   'ultimate-club-mix': 'deadmau5-club-mix.mp3',
-  'extreme-bass-boost': 'extreme-bass-boost.mp3'
+  'extreme-bass-boost': 'extreme-bass-boost.mp3',
+  'martin-garrix-animals': 'martin-garrix-animals.mp3'
 };
 
 export default class GoogleCloudMediaFile extends BaseMediaFile {
