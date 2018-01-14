@@ -1,0 +1,23 @@
+[
+  {
+    "origin": [
+      "http://localhost:8080",
+      "https://databass.io"
+    ],
+    "responseHeader": [
+      "Origin",
+      "Accept",
+      "X-Requested-With",
+      "Authorization",
+      "Content-Type",
+      "Content-Length",
+      "Accept-Encoding",
+      "X-CSRF-Token"
+    ],
+    "method": [
+      "GET",
+      "OPTIONS"
+    ],
+    "maxAgeSeconds": 86400
+  }
+]
