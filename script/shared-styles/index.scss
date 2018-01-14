@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Abel');
 
 $color-accent: rgb(57, 201, 214);
+$color-action: rgb(253, 181, 69);
 
 $font-size-small: 1rem;
 $font-size-regular: 1.25rem;
@@ -18,4 +19,10 @@ $padding-column-large: 2rem;
 * {
   margin: 0;
   padding: 0;
+}
+
+// Global styles 
+// TODO: Offload these to components
+p {
+  padding-bottom: $padding-row-regular;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ActionButton from 'vital-components/ActionButton';
 import FormField, { fieldShape } from 'vital-components/FormField';
 import './Form.scss';
 
@@ -20,9 +21,9 @@ export default class Form extends React.Component {
           )
         )}
         <fieldset>
-          <button onClick={this.props.onSubmit}>
+          <ActionButton onClick={this.props.onSubmit}>
             {this.props.submitText}
-          </button>
+          </ActionButton>
         </fieldset>
       </form>
     );

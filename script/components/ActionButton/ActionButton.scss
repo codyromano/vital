@@ -1,0 +1,23 @@
+@import '../../shared-styles/index';
+
+.action-button {
+  // Simple reset
+  appearance: none;
+  outline: 0;
+
+  display: inline-block;
+
+  background-color: $color-action;
+  color: #fff;
+
+  text-transform: uppercase;
+  text-decoration: none;
+
+  font-family: 'Abel', sans-serif;
+  font-size: $font-size-regular;
+
+  padding: 0.5em;
+  margin-top: 0.25em;
+
+  cursor: pointer;
+}
