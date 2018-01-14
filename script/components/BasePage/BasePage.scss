@@ -1,7 +1,12 @@
+@import '../../shared-styles/index';
+
 .page-width-container {
   // TODO: Define in manifest instead
   max-width: 30rem;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+
+  font-family: 'Abel', sans-serif;
+  font-size: $font-size-large;
 }
