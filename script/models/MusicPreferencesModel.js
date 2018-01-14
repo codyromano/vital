@@ -1,4 +1,5 @@
 import BaseModel from 'vital-models/BaseModel';
+import formFieldDefinition from 'vital-components/ConfigureMusicPage/formDefinition';
 
 export default class MusicPreferencesModel extends BaseModel {
   constructor() {
@@ -38,6 +39,26 @@ export default class MusicPreferencesModel extends BaseModel {
   }
   getSongSource() {
     return this.songSource;
+  }
+  getSongById(songId) {
+    const songField = formFieldDefinition.filter(
+      field => field.id === 'id'
+    )[0] || {};
+
+    const songOptions = songField.optionComponentProps || [];
+    const song = songOptions.filter(
+      option => option.optionId === songId
+    )[0] || null;
+
+    return song;
+  }
+  setSongSourceFromUrl(songId) {
+    const song = this.getSongById(songId);
+    if (song) {
+      this.songSource(song.source);
+      return true;
+    }
+    return false;
   }
   getSongId() {
     return this.songId;
