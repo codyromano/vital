@@ -1,0 +1,15 @@
+@import '../../shared-styles/index';
+
+.song-buttons, .song-button-list-item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.song-buttons {
+  display: flex;
+}
+.song-button-list-item {
+  margin-right: $padding-column-regular;
+  margin-bottom: $padding-row-regular;
+}
+
