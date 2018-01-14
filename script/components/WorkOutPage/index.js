@@ -1,13 +1,16 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import withAudioSource from 'vital-components/withAudioSource';
+import withAudioPreferences from 'vital-components/withAudioPreferences';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
 import GeolocationModel from 'vital-models/GeolocationModel';
 import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
 import MetricDisplay from 'vital-components/MetricDisplay';
 import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
+
+import MediaFileFactory from 'vital-models/MediaFileFactory';
 
 // TODO: Change name to 'Visualization' or similar
 import Visualiser from 'vital-components/App';
@@ -91,9 +94,7 @@ class WorkOutPage extends React.Component {
   }
 
   loadAudio() {
-    const sourceUrl = sharedMusicPreferencesModel.getSongSource();
-
-    getAudioDataSource(this.audioContext, sourceUrl).then(
+    getAudioDataSource(this.audioContext, this.props.songUrl).then(
       (audioSource) => {
         if (audioSource.buffer) {
           this.audioSource = audioSource;
@@ -151,5 +152,11 @@ class WorkOutPage extends React.Component {
   }
 }
 
-export default withRouter(WorkOutPage);
+WorkOutPage.propTypes = {
+  songUrl: PropTypes.string.isRequired
+  // TODO: Define other props
+};
 
+export default withAudioPreferences(
+  WorkOutPage
+);

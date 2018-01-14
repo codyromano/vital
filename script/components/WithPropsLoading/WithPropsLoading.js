@@ -66,7 +66,8 @@ class WithPropsLoading extends React.Component {
     this.status = WithPropsLoading.STATUS_PENDING;
     this.props.resolvePropsMethod(
       this.onPropsResolved,
-      this.onPropsResolutionFailed
+      this.onPropsResolutionFailed,
+      this.props
     );
   }
   componentWillUnmount() {
