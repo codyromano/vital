@@ -1,6 +1,15 @@
 'use strict';
 
 const express = require('express');
+const build = require('webpack-build');
+const path = require('path');
+ 
+build({
+  config: path.join(__dirname, 'webpackProd.config.js'),
+  watch: false
+}, function(err, data) {
+  console.log('err: ', err);
+});
 
 // Constants
 const PORT = 8080;
