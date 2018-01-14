@@ -7,6 +7,7 @@ import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel'
 import GeolocationModel from 'vital-models/GeolocationModel';
 import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
 import MetricDisplay from 'vital-components/MetricDisplay';
+import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
 
 // TODO: Change name to 'Visualization' or similar
 import Visualiser from 'vital-components/App';
@@ -83,7 +84,7 @@ class WorkOutPage extends React.Component {
 
   componentWillUnmount() {
     this.mounted = false;
-    
+
     if (this.audioSource) {
       this.audioSource.stop();
     }
@@ -113,9 +114,14 @@ class WorkOutPage extends React.Component {
     this.loadAudio();
   }
   render() {
-    // TODO: Make loading component
     if (!this.audioSource) {
-      return (<div>Loading audio</div>);
+      return (
+        <BasePage>
+          <PageWidthContainer>
+            <LoadProgressIndicator/>
+          </PageWidthContainer>
+        </BasePage>
+      );
     }
 
     const overdrive = this.state.maxPlaybackRate;

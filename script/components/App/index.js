@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Range from 'vital-components/Range';
-// import withAudioSource from 'vital-components/withAudioSource';
 import SoundAnalyserCanvas from 'vital-components/SoundAnalyserCanvas';
 import './App.scss';
 
@@ -37,10 +36,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-/*
-export default withAudioSource({
-  audioContext: new (AudioContext || webkitAudioContext)(),
-  sourceUrl: './sounds/tycho-a-walk.wav'
-})(App);
-*/
