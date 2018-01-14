@@ -29,6 +29,7 @@ export default class App extends React.Component {
       <div>
         <SoundAnalyserCanvas
           width={window.screen.width}
+          height={200}
           lineWidth={5}
           audioContext={this.props.audioContext}
           audioSource={this.props.audioSource}

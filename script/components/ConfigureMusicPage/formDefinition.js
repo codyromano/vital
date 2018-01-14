@@ -7,7 +7,8 @@ const SongOption = ({
   source,
   name,
   title,
-  onUpdateValue
+  onUpdateValue,
+  selected
 }) => {
   return (<div>
     <input
@@ -15,9 +16,14 @@ const SongOption = ({
       name={name}
       id={`song-option-${optionId}`}
       onClick={event => onUpdateValue({ optionId, source })}
+      defaultChecked={selected}
     />
     <label htmlFor={`song-option-${optionId}`}>{title}</label>
   </div>);
+};
+
+SongOption.defaultProps = {
+  selected: false
 };
 
 export default [
@@ -27,35 +33,18 @@ export default [
     optionComponent: SongOption,
     optionComponentProps: [
       {
-        optionId: 'ultimate-club-mix',
+        optionId: 'bassnectar',
         name: 'songOption',
-        title: 'Deadmau5 ultimate club mix',
-        source: 'DEPRECATED-REMOVE-THIS-PROPERTY'
+        title: 'Bassnectar',
+        source: 'DEPRECATED-REMOVE-THIS-PROPERTY',
+        selected: true
       },
       {
         optionId: 'martin-garrix-animals',
         name: 'songOption',
-        title: 'Martin Garrix - Animals',
+        title: 'Martin Garrix',
         source: 'DEPRECATED-REMOVE-THIS-PROPERTY'
-      },
-      {
-        optionId: 'extreme-bass-boost',
-        name: 'songOption',
-        title: 'Extreme Bass Boost',
-        source: 'DEPRECATED-REMOVE-THIS-PROPERTY'
-      },
-      {
-        optionId: 'a-walk',
-        name: 'songOption',
-        title: 'A Walk',
-        source: './sounds/tycho-a-walk.wav'
-      },
-      {
-        optionId: 'when-will-the-bass-drop',
-        name: 'songOption',
-        title: 'When will the bass drop?',
-        source: 'DEPRECATED-REMOVE-THIS-PROPERTY'
-      },
+      }
     ]
   },
   {

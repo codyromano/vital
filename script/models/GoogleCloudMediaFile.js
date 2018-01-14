@@ -2,9 +2,7 @@ import BaseMediaFile from 'vital-models/BaseMediaFile';
 
 // TODO: Create a microservice to provide song metadata
 const mapMediaFileIdToBucketFileName = {
-  'bass-drop': 'bass-drop.wav',
-  'ultimate-club-mix': 'deadmau5-club-mix.mp3',
-  'extreme-bass-boost': 'extreme-bass-boost.mp3',
+  'bassnectar': 'bassnectar.mp3',
   'martin-garrix-animals': 'martin-garrix-animals.mp3'
 };
 

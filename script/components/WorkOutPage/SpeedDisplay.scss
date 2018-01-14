@@ -1,18 +1,11 @@
 @import '../../shared-styles/index';
 
-.metric-dashboard {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .speed-display {
-  color: #fff;
-  font-family: Impact;
-  font-size: 7rem;
+  color: #111;
+  font-size: $font-size-large;
 
   small {
-    color: $color-accent;
+    color: #555;
   }
 }
 

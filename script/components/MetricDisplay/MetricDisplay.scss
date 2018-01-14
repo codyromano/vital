@@ -1,23 +1,17 @@
 @import '../../shared-styles/index';
 
-.metric-dashboard {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
 .speed-display {
-  color: #fff;
-  font-family: Impact;
-  font-size: 7rem;
+  color: #111;
+  font-size: $font-size-large;
 
   small {
-    color: $color-accent;
+    font-size: $font-size-regular;
+    display: block;
+    color: #666;
   }
 }
 
 .speed-display-overdrive {
-  color: orange;
   animation-name: overdrive;
   animation-duration: 0.10s;
   animation-iteration-count: infinite;

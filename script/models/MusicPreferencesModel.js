@@ -61,7 +61,9 @@ export default class MusicPreferencesModel extends BaseModel {
     return false;
   }
   getSongId() {
-    return this.songId;
+    // TODO: Derive default from option selected in
+    // configure music page
+    return this.songId || 'bassnectar';
   }
   getMinimumSpeed() {
     return this.defaultMinimumSpeed;
