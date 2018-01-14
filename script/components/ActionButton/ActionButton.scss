@@ -4,10 +4,11 @@
   // Simple reset
   appearance: none;
   outline: 0;
+  border: none;
 
   display: inline-block;
 
-  background-color: $color-action;
+  background-color: #1abc9c;
   color: #fff;
 
   text-transform: uppercase;
@@ -20,4 +21,9 @@
   margin-top: 0.25em;
 
   cursor: pointer;
+}
+
+.action-button-primary {
+  background-color: $color-action;
+  color: #fff;
 }
