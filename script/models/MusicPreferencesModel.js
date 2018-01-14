@@ -26,8 +26,9 @@ export default class MusicPreferencesModel extends BaseModel {
       this.maximumSpeed * this.currentProgress(milesPerHour)
     );
   }
-  updateSongSource(newSource) {
-    this.songSource = newSource;
+  updateSongSource(formFieldDefinition) {
+    this.songId = formFieldDefinition.optionId;
+    this.songSource = formFieldDefinition.source;
   }
   updateSongMinimumSpeed(newSpeed) {
     this.minimumSpeed = newSpeed;
@@ -37,6 +38,9 @@ export default class MusicPreferencesModel extends BaseModel {
   }
   getSongSource() {
     return this.songSource;
+  }
+  getSongId() {
+    return this.songId;
   }
   getMinimumSpeed() {
     return this.defaultMinimumSpeed;

@@ -20,13 +20,18 @@ class ConfigureMusicPage extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
   onSubmit() {
-    this.props.history.push('/work-out');
+    const songId = sharedMusicPreferencesModel.getSongId();
+    const songPageUrl = `/work-out/${songId}`;
+    this.props.history.push(songPageUrl);
   }
   onUpdateFieldValue(fieldId, fieldValue) {
     const updateFn = mapFieldIdToModelUpdateMethod[fieldId];
     updateFn.call(sharedMusicPreferencesModel, fieldValue);
   }
   componentDidMount() {
+  }
+  componentWillUnmount() {
+    delete this.mapFieldIdToModelUpdateMethod;
   }
   render() {
     return (

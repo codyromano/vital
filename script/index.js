@@ -10,7 +10,7 @@ const AppWithRouter = () => (
   <HashRouter>
     <Switch>
       <Route path="/configure-music" exact={true} component={ConfigureMusicPage} />
-      <Route path="/work-out" exact={true} component={WorkOutPage} />
+      <Route path="/work-out/:songId" exact={true} component={WorkOutPage} />
       <Route path="/" component={App} />
     </Switch>
   </HashRouter>

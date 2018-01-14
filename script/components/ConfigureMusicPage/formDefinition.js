@@ -14,7 +14,7 @@ const SongOption = ({
       type="radio"
       name={name}
       id={`song-option-${optionId}`}
-      onClick={event => onUpdateValue(source)}
+      onClick={event => onUpdateValue({ optionId, source })}
     />
     <label htmlFor={`song-option-${optionId}`}>{title}</label>
   </div>);
@@ -27,25 +27,25 @@ export default [
     optionComponent: SongOption,
     optionComponentProps: [
       {
-        optionId: 1,
+        optionId: 'ultimate-club-mix',
         name: 'songOption',
         title: 'Deadmau5 ultimate club mix',
         source: 'https://storage.cloud.google.com/databassio/deadmau5-club-mix.mp3'
       },
       {
-        optionId: 2,
+        optionId: 'extreme-bass-boost',
         name: 'songOption',
         title: 'Extreme Bass Boost',
         source: 'https://storage.cloud.google.com/databassio/extreme-bass-boost.mp3'
       },
       {
-        optionId: 3,
+        optionId: 'a-walk',
         name: 'songOption',
         title: 'A Walk',
         source: './sounds/tycho-a-walk.wav'
       },
       {
-        optionId: 4,
+        optionId: 'when-will-the-bass-drop',
         name: 'songOption',
         title: 'When will the bass drop?',
         source: 'https://storage.cloud.google.com/databassio/bass-drop.wav'
