@@ -28,7 +28,6 @@ export default class Range extends React.Component {
 
 	constructor(props, context) {
 		super(props, context);
-		this.onChange = this.onChange.bind(this);
 
 		this.state = {
 			value: props.value
@@ -36,10 +35,6 @@ export default class Range extends React.Component {
 
 		this.increase = this.increase.bind(this);
 		this.decrease = this.decrease.bind(this);
-	}
-
-	onChange({ target }) {
-		this.props.onValueChanged(target.value);
 	}
 
 	increase(event) {
@@ -51,6 +46,7 @@ export default class Range extends React.Component {
 		this.setState({
 			value: newValue
 		});
+		this.props.onUpdateValue(newValue);
 	}
 
 	decrease(event) {
@@ -62,6 +58,7 @@ export default class Range extends React.Component {
 		this.setState({
 			value: newValue
 		});
+		this.props.onUpdateValue(newValue);
 	}
 
 	render() {
