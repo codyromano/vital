@@ -2,3 +2,4 @@
 node_modules
 public/generated
 public/sounds
+.webpack_build_cache/

@@ -5,17 +5,19 @@ import SongOption from 'vital-components/SongOption';
 export default [
   {
     id: 'maxSpeed',
-    label: 'Max. music tempo',
+    label: 'Music speed limit',
     optionComponent: Range,
     optionComponentProps: [
       {
         metricLabel: '% faster than normal',
         min: 0,
         max: 100,
-        value: 50
+        value: 50,
+        step: 10
       }
     ]
   },
+  /*
   {
     id: 'minSpeed',
     label: 'Min. music tempo',
@@ -25,10 +27,12 @@ export default [
         metricLabel: '% slower than normal',
         min: 0,
         max: 100,
-        value: 50
+        value: 50,
+        step: 10
       }
     ]
   },
+  */
   {
     id: 'targetMPH',
     label: 'Exercise goal',

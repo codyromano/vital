@@ -11,6 +11,7 @@ import MetricDisplay from 'vital-components/MetricDisplay';
 import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
 import Progress from 'vital-components/Progress';
 import ActionButton from 'vital-components/ActionButton';
+import { withModel } from 'vital-components/ModelProvider';
 
 // TODO: Move to standalone component and remove inline styles
 const LayoutRow = (props) => (
@@ -22,6 +23,13 @@ const LayoutRow = (props) => (
 );
 
 import MediaFileFactory from 'vital-models/MediaFileFactory';
+
+// TODO: Move to utils file
+const clamp = (value, min, max) => {
+  const clampLower = Math.max(value, min);
+  const clampUpper = Math.min(clampLower, max);
+  return clampUpper;
+};
 
 // TODO: Change name to 'Visualization' or similar
 import Visualiser from 'vital-components/App';
@@ -58,44 +66,37 @@ class WorkOutPage extends React.Component {
     super(props, context);
     this.audioContext = new (AudioContext || webkitAudioContext)();
     this.audioSource = null;
-
-    const initialMilesPerHour = 0;
-
-    this.state = {
-      currentMilesPerHour: 0,
-      playbackRate: sharedMusicPreferencesModel.mapMilesPerHourToSongSpeed(
-        initialMilesPerHour
-      ),
-      maxPlaybackRate: false
-    };
     this.updateMusicOnGeolocationChange = this.updateMusicOnGeolocationChange.bind(this);
+  }
+
+  getPlaybackRate() {
+    const currentMPH = geolocationModel.getCurrentMilesPerHour();
+    const { targetMPH, maxSpeed, minSpeed } = this.props.model;
+
+    return clamp(
+      (currentMPH / targetMPH) * maxSpeed,
+      minSpeed,
+      maxSpeed
+    );
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.audioSource.playbackRate.value = newProps.playbackRate;
   }
 
   updateMusicOnGeolocationChange() {
     onGeolocationChange((latitude, longitude) => {
-
       // TODO: Provide the audio source via an HOC so that WorkOutPage
       // doesn't have to wait for it.
       if (!this.audioSource) {
         console.warn('Waiting for audio source');
         return;
       }
-
       geolocationModel.addLocation({ latitude, longitude });
-
-      const currentMilesPerHour = geolocationModel.getCurrentMilesPerHour();
-      const playbackRate = sharedMusicPreferencesModel
-        .mapMilesPerHourToSongSpeed(currentMilesPerHour);
-
-      this.audioSource.playbackRate.value = parseFloat(playbackRate.toPrecision(3));
-
-      if (this.mounted) {
-        this.setState({
-          currentMilesPerHour,
-          playbackRate,
-          maxPlaybackRate: sharedMusicPreferencesModel.maximumSpeed === playbackRate
-        });
-      }
+      this.props.updateModel(
+        'currentMPH',
+        geolocationModel.getCurrentMilesPerHour()
+      );
     });
   }
 
@@ -112,6 +113,7 @@ class WorkOutPage extends React.Component {
       (audioSource) => {
         if (audioSource.buffer) {
           this.audioSource = audioSource;
+          this.audioSource.playbackRate.value = this.props.model.playbackRate;
           this.forceUpdate();
         } else {
           this.props.history.push('/error/music-load');
@@ -138,10 +140,8 @@ class WorkOutPage extends React.Component {
         </BasePage>
       );
     }
-
-    const overdrive = this.state.maxPlaybackRate;
-    const speedMetric = overdrive ? 'MAX' : this.state.playbackRate * 100;
-    const speedUnit = overdrive ? '' : '%';
+    const speedMetric = this.props.model.playbackRate * 100;
+    const speedUnit = '%';
 
     // TODO: Move to .scss file
     const paragraphStyles = {
@@ -150,8 +150,16 @@ class WorkOutPage extends React.Component {
       textAlign: 'center'
     };
 
+    const percentProgress = Math.round(
+      clamp(
+        (this.props.model.playbackRate / this.props.model.maxSpeed) * 100,
+        0,
+        100
+      )
+    );
+
     return (
-      <BasePage headerBottomPadding={false}>
+      <div>
         <Visualiser
           audioContext={this.audioContext}
           audioSource={this.audioSource}
@@ -162,10 +170,10 @@ class WorkOutPage extends React.Component {
 
         <LayoutRow>
           <Progress
-            label={`Boost level: ${Math.round(this.state.playbackRate * 100)}%`}
-            min={sharedMusicPreferencesModel.minimumSpeed}
-            max={sharedMusicPreferencesModel.maximumSpeed}
-            value={this.state.playbackRate}
+            label={`Boost level: ${percentProgress}%`}
+            min={0}
+            max={100}
+            value={percentProgress}
             backgroundColor="#fff"
             barColor="#1abc9c"
           />
@@ -174,13 +182,13 @@ class WorkOutPage extends React.Component {
         <LayoutRow>
           <div className="metric-group">
             <MetricDisplay
-              metric={this.state.currentMilesPerHour}
+              metric={this.props.model.currentMPH}
               precision={1}
               unit={'current MPH'}
               size={'large'}
             />
             <MetricDisplay
-              metric={sharedMusicPreferencesModel.targetMilesPerHour}
+              metric={this.props.model.targetMPH}
               precision={1}
               unit={'target MPH'}
               size={'large'}
@@ -193,16 +201,24 @@ class WorkOutPage extends React.Component {
             <ActionButton to="/configure-music">Update music settings</ActionButton>
           </div>
         </LayoutRow>
-      </BasePage>
+      </div>
     );
   }
 }
 
 WorkOutPage.propTypes = {
+  model: PropTypes.shape({
+    currentMPH: PropTypes.number.isRequired,
+    targetMPH: PropTypes.number.isRequired,
+    minSpeed: PropTypes.number.isRequired,
+    maxSpeed: PropTypes.number.isRequired,
+    playbackRate: PropTypes.number.isRequired
+  }),
+  updateModel: PropTypes.func.isRequired,
   songUrl: PropTypes.string.isRequired
   // TODO: Define other props
 };
 
 export default withAudioPreferences(
-  WorkOutPage
+  withModel(WorkOutPage)
 );

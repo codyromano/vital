@@ -2,22 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Form from 'vital-components/Form';
 import { withRouter } from 'react-router-dom';
+import { withModel } from 'vital-components/ModelProvider';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import ActionButton from 'vital-components/ActionButton';
 import fieldsDefinition from './formDefinition';
 import './ConfigureStatsPage.scss';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
 
-const mapFieldIdToModelUpdateMethod = {
-  // TODO: Add field update methods
-  'targetMPH': sharedMusicPreferencesModel.updateTargetMPH
-};
-
 class ConfigureStatsPage extends React.Component {
   constructor(props, context) {
     super(props, context);
-
-    this.onUpdateFieldValue = this.onUpdateFieldValue.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
   onSubmit(event) {
@@ -27,10 +21,6 @@ class ConfigureStatsPage extends React.Component {
     const songPageUrl = `/work-out/${songId}`;
     this.props.history.push(songPageUrl);
   }
-  onUpdateFieldValue(fieldId, fieldValue) {
-    const updateFn = mapFieldIdToModelUpdateMethod[fieldId];
-    (updateFn && updateFn.call(sharedMusicPreferencesModel, fieldValue));
-  }
   render() {
     return (
       <BasePage>
@@ -38,7 +28,7 @@ class ConfigureStatsPage extends React.Component {
           <Form
             fields={fieldsDefinition}
             onSubmit={this.onSubmit}
-            onUpdateFieldValue={this.onUpdateFieldValue}
+            onUpdateFieldValue={this.props.updateModel}
           />
           <ActionButton
             onClick={this.onSubmit}
@@ -54,4 +44,8 @@ class ConfigureStatsPage extends React.Component {
   }
 }
 
-export default withRouter(ConfigureStatsPage);
+export default withRouter(
+  withModel(
+    ConfigureStatsPage
+  )
+);
