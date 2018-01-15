@@ -8,9 +8,13 @@ export default class IntroPage extends React.Component {
     return (
       <BasePage>
         <PageWidthContainer>
-          <p>Increase the intensity of your workout music according
-            to how fast you run or bike.</p>
-          <ActionButton to="/configure-music">Choose music</ActionButton>
+          <p>DataBass increases the intensity of your workout music 
+            as you're running or biking.</p>
+
+          <p>Go fast to increase the tempo and bass. If you slow
+            down, so will your music.</p>
+
+          <ActionButton to="/configure-music">Choose a song</ActionButton>
         </PageWidthContainer>
       </BasePage>
     );

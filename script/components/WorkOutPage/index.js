@@ -9,6 +9,17 @@ import GeolocationModel from 'vital-models/GeolocationModel';
 import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
 import MetricDisplay from 'vital-components/MetricDisplay';
 import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
+import Progress from 'vital-components/Progress';
+import ActionButton from 'vital-components/ActionButton';
+
+// TODO: Move to standalone component and remove inline styles
+const LayoutRow = (props) => (
+  <PageWidthContainer>
+    <div style={{ marginBottom: '1rem' }}>
+      {props.children}
+    </div>
+  </PageWidthContainer>
+);
 
 import MediaFileFactory from 'vital-models/MediaFileFactory';
 
@@ -129,26 +140,56 @@ class WorkOutPage extends React.Component {
     const speedMetric = overdrive ? 'MAX' : this.state.playbackRate * 100;
     const speedUnit = overdrive ? '' : '%';
 
+    // TODO: Move to .scss file
+    const paragraphStyles = {
+      display: 'block',
+      width: '100%',
+      textAlign: 'center'
+    };
+
     return (
       <BasePage headerBottomPadding={false}>
-
-        <div className="metric-dashboard">
-          <MetricDisplay
-            metric={this.state.currentMilesPerHour}
-            unit={'mph'}
-          />
-          <MetricDisplay
-            precision={0}
-            metric={speedMetric}
-            unit={speedUnit}
-            overdrive={overdrive}
-          />
-        </div>
-
         <Visualiser
           audioContext={this.audioContext}
           audioSource={this.audioSource}
         />
+        <PageWidthContainer>
+          <p style={paragraphStyles}>Move faster to boost your music.</p>
+        </PageWidthContainer>
+
+        <LayoutRow>
+          <Progress
+            label={`Boost level: ${this.state.playbackRate * 100}%`}
+            min={sharedMusicPreferencesModel.minimumSpeed}
+            max={sharedMusicPreferencesModel.maximumSpeed}
+            value={this.state.playbackRate}
+            backgroundColor="#fff"
+            barColor="#1abc9c"
+          />
+        </LayoutRow>
+
+        <LayoutRow>
+          <div className="metric-group">
+            <MetricDisplay
+              metric={this.state.currentMilesPerHour}
+              precision={1}
+              unit={'current MPH'}
+              size={'large'}
+            />
+            <MetricDisplay
+              metric={sharedMusicPreferencesModel.targetMilesPerHour}
+              precision={1}
+              unit={'target MPH'}
+              size={'large'}
+            />
+          </div>
+        </LayoutRow>
+
+        <LayoutRow>
+          <div style={paragraphStyles}>
+            <ActionButton to="/configure-music">Update music settings</ActionButton>
+          </div>
+        </LayoutRow>
       </BasePage>
     );
   }

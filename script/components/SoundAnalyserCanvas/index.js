@@ -115,7 +115,7 @@ SoundAnalyserCanvas.defaultProps = {
   width: 500,
   height: 250,
   generateWaveFormColor: () => 'rgb(57, 201, 214)',
-  generateBackgroundColor: () => '#fff',
+  generateBackgroundColor: () => 'rgb(48, 48, 48)',
   lineWidth: 50
 };
 

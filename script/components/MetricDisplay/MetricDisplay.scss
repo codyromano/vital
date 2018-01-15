@@ -7,8 +7,14 @@
   small {
     font-size: $font-size-regular;
     display: block;
+    width: 100%;
+    text-align: center;
     color: #666;
   }
+}
+
+.speed-display-large {
+  font-size: 5rem;
 }
 
 .speed-display-overdrive {

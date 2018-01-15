@@ -20,7 +20,7 @@ class ConfigureMusicPage extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
   onSubmit(event) {
-    event.preventDefault();
+    (event && event.preventDefault());
     
     const songId = sharedMusicPreferencesModel.getSongId();
     const songPageUrl = `/work-out/${songId}`;
@@ -29,6 +29,10 @@ class ConfigureMusicPage extends React.Component {
   onUpdateFieldValue(fieldId, fieldValue) {
     const updateFn = mapFieldIdToModelUpdateMethod[fieldId];
     updateFn.call(sharedMusicPreferencesModel, fieldValue);
+
+    if (fieldId === 'song') {
+      this.onSubmit();
+    }
   }
   componentDidMount() {
   }

@@ -1,10 +1,12 @@
+$record-size: 15rem;
+
 .load-progress-indicator {
   position: relative;
 
   display: flex;
   max-width: 30rem;
-  width: 15rem;
-  height: 15rem;
+  width: $record-size;
+  height: $record-size;
 
   background: url(/images/record-player.png) center no-repeat;
   background-size: contain;
@@ -32,6 +34,11 @@
 
 .load-progress-indicator-message {
   font-weight: bold;
-  font-size: 3rem;
-  background: rgba(255, 255, 255, 0.75);
+  font-size: ($record-size * .075);
+  color: #fff;
+  display: block;
+  width: 70%;
+  text-align: center;
+  margin-left: -($record-size * .15);
+  margin-top: -($record-size * .25);
 }

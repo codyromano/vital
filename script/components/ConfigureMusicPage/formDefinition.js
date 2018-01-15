@@ -1,30 +1,6 @@
 import React from 'react';
 import Range from 'vital-components/Range';
-
-// TODO: Move SongOption to its own file
-const SongOption = ({
-  optionId,
-  source,
-  name,
-  title,
-  onUpdateValue,
-  selected
-}) => {
-  return (<div>
-    <input
-      type="radio"
-      name={name}
-      id={`song-option-${optionId}`}
-      onClick={event => onUpdateValue({ optionId, source })}
-      defaultChecked={selected}
-    />
-    <label htmlFor={`song-option-${optionId}`}>{title}</label>
-  </div>);
-};
-
-SongOption.defaultProps = {
-  selected: false
-};
+import SongOption from 'vital-components/SongOption';
 
 export default [
   {
@@ -37,16 +13,20 @@ export default [
         name: 'songOption',
         title: 'Bassnectar',
         source: 'DEPRECATED-REMOVE-THIS-PROPERTY',
-        selected: true
+        selected: true,
+        previewUrl: 'https://storage.cloud.google.com/databassio/bassnectar.mp3?authuser=0'
       },
       {
         optionId: 'martin-garrix-animals',
         name: 'songOption',
         title: 'Martin Garrix',
-        source: 'DEPRECATED-REMOVE-THIS-PROPERTY'
+        source: 'DEPRECATED-REMOVE-THIS-PROPERTY',
+        previewUrl: 'https://storage.cloud.google.com/databassio/martin-garrix-animals.mp3?authuser=0'
       }
     ]
-  },
+  }
+
+  /*
   {
     id: 'maxSpeed',
     label: 'Maximum speed',
@@ -71,4 +51,5 @@ export default [
       }
     ]
   }
+  */
 ];

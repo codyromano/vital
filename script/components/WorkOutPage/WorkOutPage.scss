@@ -1,1 +1,12 @@
-// Add styles
+.metric-group {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+  .speed-display + .speed-display {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: solid #ccc 0.10rem;
+  }
+}
+

@@ -10,7 +10,8 @@ const SongOption = ({
   name,
   title,
   onUpdateValue,
-  selected
+  selected,
+  previewUrl
 }) => {
   return (
     <div className="song-option" key={optionId}>
@@ -18,7 +19,7 @@ const SongOption = ({
 
       <ul className="song-buttons">
         <li className="song-button-list-item">
-          <AudioPreviewButton songUrl="https://storage.cloud.google.com/databassio/bassnectar.mp3?authuser=0" />
+          <AudioPreviewButton songUrl={previewUrl} />
         </li>
         <li className="song-button-list-item">
           <ActionButton onClick={event => onUpdateValue({ optionId, source })}>

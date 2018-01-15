@@ -1,0 +1,46 @@
+@import '../../shared-styles/index';
+
+.progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  border: solid #ccc 0.1rem;
+  width: 100%;
+  height: 3rem;
+  text-align: center;
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transition: width ease 1s;
+
+  animation-name: flash;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  z-index: 1;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.progress-label {
+  position: relative;
+  z-index: 2;
+  font-size: $font-size-small;
+  color: #666;
+  text-transform: uppercase;
+}

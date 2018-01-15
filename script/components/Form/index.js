@@ -20,23 +20,28 @@ export default class Form extends React.Component {
             />
           )
         )}
-        <fieldset>
-          <ActionButton onClick={this.props.onSubmit}>
-            {this.props.submitText}
-          </ActionButton>
-        </fieldset>
+
+        {this.props.includeSubmitButton && (
+          <fieldset>
+            <ActionButton onClick={this.props.onSubmit}>
+              {this.props.submitText}
+            </ActionButton>
+          </fieldset>
+        )}
       </form>
     );
   }
 }
 
 Form.defaultProps = {
+  includeSubmitButton: false,
   submitText: 'Start workout',
   onUpdateFieldValue: () => {},
   onSubmit: () => {}
 };
 
 Form.propTypes = {
+  includeSubmitButton: PropTypes.bool,
   submitText: PropTypes.string,
   fields: PropTypes.arrayOf(fieldShape).isRequired,
   onUpdateFieldValue: PropTypes.func,

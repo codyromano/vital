@@ -26,7 +26,7 @@ export default class App extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div className="sound-canvas-wrapper">
         <SoundAnalyserCanvas
           width={window.screen.width}
           height={200}
