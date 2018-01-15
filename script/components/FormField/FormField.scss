@@ -1,5 +1,8 @@
 @import '../../shared-styles/index';
 
 .form-field-label {
-  color: $color-accent;
+  display: block;
+  color: #000;
+  font-size: $font-size-large;
+  margin-bottom: $padding-row-regular;
 }

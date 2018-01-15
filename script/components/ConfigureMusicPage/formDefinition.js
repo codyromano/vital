@@ -5,7 +5,7 @@ import SongOption from 'vital-components/SongOption';
 export default [
   {
     id: 'song',
-    label: 'Choose an EDM mix',
+    label: 'Choose a song',
     optionComponent: SongOption,
     optionComponentProps: [
       {

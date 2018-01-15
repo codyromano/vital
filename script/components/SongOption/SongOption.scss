@@ -1,5 +1,8 @@
 @import '../../shared-styles/index';
 
+.song-title {
+  font-size: $font-size-regular;
+}
 .song-buttons, .song-button-list-item {
   margin: 0;
   padding: 0;
