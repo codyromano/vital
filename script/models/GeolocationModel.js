@@ -7,8 +7,14 @@ export default class GeolocationModel extends BaseModel {
   constructor() {
     super();
     this.coordinates = [];
+    // Delete coordinates older than n seconds for performance and UX reasons.
+    // Current MPH should be based only on the user's *recent* workout speed.
+    this.coordsMaxAgeSeconds = 45;
+
+    // Clean up stale data points to improve performance
+    window.setInterval(() => this.deleteStaleCoordinates(), 10000);
   }
-  
+
   addLocation({ latitude, longitude }) {
     this.coordinates.push({
       latitude,
@@ -17,28 +23,49 @@ export default class GeolocationModel extends BaseModel {
     });
   }
 
-  // TODO: Diffing the latest 2 coords works, but creates a lot of
-  // variation. Maybe diff based on an average of the last n coords
-  // to create a smoother listening experience?
-  getCurrentMilesPerHour() {
-    const totalCoords = this.coordinates.length;
+  isStaleCoordinate(coord) {
+    const currentTime = new Date().getTime();
+    return currentTime - coord.time >= this.coordsMaxAgeSeconds * 1000;
+  }
 
-    // There's not enough location history to determine current mph
-    if (totalCoords < 2) {
-      return 0;
+  deleteStaleCoordinates() {
+    let index = 0;
+
+    for (const coords of this.coordinates) {
+      if (this.isStaleCoordinate(coords)) {
+        delete this.coordinates[index];
+        index+= 1;
+      } else {
+        break;
+      }
     }
+  }
 
-    const mostRecentMilesDelta = haversine(
-      this.coordinates[totalCoords - 1],
-      this.coordinates[totalCoords - 2],
-      {units: 'miles'}
-    );
-
-    const mostRecentTimeDelta = this.coordinates[totalCoords - 1].time -
-      this.coordinates[totalCoords - 2].time;
+  _getMilesPerHourEstimateFromCoordPair(coordsA, coordsB) {
+    const mostRecentMilesDelta = haversine(coordsA, coordsB, {units: 'miles'});
+    const mostRecentTimeDelta = coordsB.time - coordsA.time;
 
     // Make the time relative to one hour
     const timeMultiplier = millisecondsInOneHour / mostRecentTimeDelta;
-    return mostRecentMilesDelta * timeMultiplier;
+    const currentMilesPerHourEstimate = mostRecentMilesDelta * timeMultiplier;
+
+    return currentMilesPerHourEstimate;
+  }
+
+  getCurrentMilesPerHour() {
+    const coords = this.coordinates.filter(
+      coords => !this.isStaleCoordinate(coords)
+    );
+    // There's not enough location history to determine current mph
+    if (coords.length < this.minimumSampleSize) {
+      return 0;
+    }
+
+    const estimate = this._getMilesPerHourEstimateFromCoordPair(
+      coords[0],
+      coords[coords.length - 1]
+    );
+
+    return estimate;
   }
 }

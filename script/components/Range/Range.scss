@@ -1,3 +1,5 @@
+@import '../../shared-styles/index';
+
 fieldset {
 	border: none;
 }
@@ -5,4 +7,40 @@ fieldset {
 	width: 100%;
 	max-width: 15rem;
 	border: none;
+}
+
+.metric-display-range-wrapper {
+	width: 10rem;
+	display: flex;
+	justify-content: center;
+	justify-items: center;
+}
+
+.metric-range {
+	position: relative;
+	display: flex;
+	align-items: center;
+	align-content: center;
+	margin-bottom: $padding-row-large;
+}
+
+.metric-range-button {
+	appearance: none;
+	-webkit-appearance: none;
+	outline: none;
+	border: none;
+	border-radius: 100%;
+
+	background-color: rgb(253, 181, 69);
+	color: #fff;
+	font-weight: bold;
+	font-size: $font-size-large;
+	padding: 0.1em 0.4em;
+
+	// TODO: Remove this hack
+	margin-top: -1.75rem;
+}
+
+.metric-range-button-hidden {
+	visibility: hidden;
 }

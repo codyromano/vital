@@ -11,7 +11,7 @@ const Progress = ({
   barColor
 }) => {
 
-  const width = `${(value / max) * 100}%`;
+  const width = `${Math.round((value / max) * 100)}%`;
 
   return (
     <div

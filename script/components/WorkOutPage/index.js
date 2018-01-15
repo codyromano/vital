@@ -73,8 +73,11 @@ class WorkOutPage extends React.Component {
 
   updateMusicOnGeolocationChange() {
     onGeolocationChange((latitude, longitude) => {
-      // TODO: Clean this up
+
+      // TODO: Provide the audio source via an HOC so that WorkOutPage
+      // doesn't have to wait for it.
       if (!this.audioSource) {
+        console.warn('Waiting for audio source');
         return;
       }
 
@@ -84,7 +87,7 @@ class WorkOutPage extends React.Component {
       const playbackRate = sharedMusicPreferencesModel
         .mapMilesPerHourToSongSpeed(currentMilesPerHour);
 
-      this.audioSource.playbackRate.value = playbackRate;
+      this.audioSource.playbackRate.value = parseFloat(playbackRate.toPrecision(3));
 
       if (this.mounted) {
         this.setState({

@@ -1,6 +1,11 @@
 @import '../../shared-styles/index';
 
 .speed-display {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+
   color: #111;
   font-size: $font-size-large;
 

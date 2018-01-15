@@ -5,10 +5,6 @@ import SoundAnalyserCanvas from 'vital-components/SoundAnalyserCanvas';
 import './App.scss';
 
 export default class App extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.changeSpeed = this.changeAudioSourceProperty.bind(this, 'speed');
-  }
   componentDidMount() {
     this.props.audioSource.start();
     this.props.audioSource.frequency = 1000;
@@ -16,13 +12,6 @@ export default class App extends React.Component {
   componentWillUnmount() {
     this.props.audioSource.stop();
     delete this.changeSpeed;
-  }
-  changeAudioSourceProperty(property, value) {
-    switch (property) {
-      case 'speed':
-        this.props.audioSource.playbackRate.value = value;
-      break;
-    }
   }
   render() {
     return (

@@ -1,8 +1,7 @@
 [
   {
     "origin": [
-      "http://localhost:8080",
-      "https://databass.io"
+      "*"
     ],
     "responseHeader": [
       "Origin",
