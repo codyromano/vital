@@ -162,7 +162,7 @@ class WorkOutPage extends React.Component {
 
         <LayoutRow>
           <Progress
-            label={`Boost level: ${this.state.playbackRate * 100}%`}
+            label={`Boost level: ${Math.round(this.state.playbackRate * 100)}%`}
             min={sharedMusicPreferencesModel.minimumSpeed}
             max={sharedMusicPreferencesModel.maximumSpeed}
             value={this.state.playbackRate}
