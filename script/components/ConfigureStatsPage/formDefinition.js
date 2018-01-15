@@ -37,8 +37,8 @@ export default [
       {
         metricLabel: 'miles per hour',
         min: 1,
-        max: 15,
-        value: 5,
+        max: 20,
+        value: 13,
         step: 0.5,
         precision: 1
       }

@@ -13,7 +13,7 @@ export default class MusicPreferencesModel extends BaseModel {
     this.minimumSpeed = this.defaultMinimumSpeed;
     this.maximumSpeed = this.defaultMaximumSpeed;
 
-    this.targetMilesPerHour = 5;
+    this.targetMilesPerHour = 13;
   }
   currentProgress(milesPerHour) {
     const percentOfMaximumSpeedAchieved = Math.min(

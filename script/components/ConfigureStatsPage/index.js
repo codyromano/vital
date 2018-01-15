@@ -29,7 +29,7 @@ class ConfigureStatsPage extends React.Component {
   }
   onUpdateFieldValue(fieldId, fieldValue) {
     const updateFn = mapFieldIdToModelUpdateMethod[fieldId];
-    updateFn.call(sharedMusicPreferencesModel, fieldValue);
+    (updateFn && updateFn.call(sharedMusicPreferencesModel, fieldValue));
   }
   render() {
     return (

@@ -42,6 +42,8 @@ export default class Range extends React.Component {
 		this.props.onValueChanged(target.value);
 	}
 
+	// TODO: increase and decrease can be a single method with
+	// a step parameter
 	increase(event) {
 		event.preventDefault();
 		const newValue = Math.min(
@@ -51,6 +53,7 @@ export default class Range extends React.Component {
 		this.setState({
 			value: newValue
 		});
+		this.props.onUpdateValue(newValue);
 	}
 
 	decrease(event) {
@@ -62,6 +65,7 @@ export default class Range extends React.Component {
 		this.setState({
 			value: newValue
 		});
+		this.props.onUpdateValue(newValue);
 	}
 
 	render() {
