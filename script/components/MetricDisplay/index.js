@@ -10,9 +10,14 @@ const MetricDisplay = ({
   size,
   precision
 }) => {
+  // TODO: Change this; shouldn't be necessary
+  if (isNaN(metric)) {
+    metric = 0;
+  }
   if (typeof metric === 'number') {
     metric = metric.toFixed(precision);
   }
+
   const classList = [
     'speed-display',
     `speed-display-${size}`

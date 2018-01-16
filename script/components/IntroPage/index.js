@@ -16,6 +16,7 @@ export default class IntroPage extends React.Component {
         ref={(vid) => {this.vid = vid; }}
         controls={false}
         loop={true}
+        defaultMuted={true}
         autoplay={true}>
         <source
           autoplay={true}
