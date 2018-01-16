@@ -1,4 +1,5 @@
 @import '../../shared-styles/index';
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 .app-header {
   background-color: $color-accent;
@@ -11,4 +12,5 @@
 .logo {
   color: #fff;
   font-size: $font-size-regular;
+  font-family: Montserrat;
 }
