@@ -38,8 +38,6 @@ class ModelProvider extends React.Component {
   }
 
   updateModel(key, value) {
-    console.log(key, value);
-
     const newModel = {
       ...this.model,
       [key]: value
