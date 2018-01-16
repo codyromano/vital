@@ -62,7 +62,6 @@ class WorkOutPage extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.loadAudio();
     this.audioSource.playbackRate.value = getPlaybackRate(
       newProps.model
     );

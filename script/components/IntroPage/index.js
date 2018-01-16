@@ -16,10 +16,9 @@ export default class IntroPage extends React.Component {
         ref={(vid) => {this.vid = vid; }}
         controls={false}
         loop={true}
-        defaultMuted={true}
-        autoplay={true}>
+        autoPlay={true}>
         <source
-          autoplay={true}
+          autoPlay={true}
           width={'100%'}
           src="https://giant.gfycat.com/SadColorlessFlicker.webm"
           type="video/webm"/>

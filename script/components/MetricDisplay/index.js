@@ -10,7 +10,7 @@ const MetricDisplay = ({
   size,
   precision
 }) => {
-  // TODO: Change this; shouldn't be necessary
+    // TODO: Change this; shouldn't be necessary
   if (isNaN(metric)) {
     metric = 0;
   }
