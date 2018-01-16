@@ -10,7 +10,7 @@ export const calculateBoostRate = (
   targetMPH
 ) => {
   const result = Math.min(100, (currentMPH / targetMPH)).toPrecision(1);
-  return parseFloat(result);
+  return isNaN(result) ? 0 : parseFloat(result);
 }
 
 export const getPlaybackRate = ({
