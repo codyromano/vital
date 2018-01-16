@@ -2,16 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
-import withAudioSource from 'vital-components/withAudioSource';
-import withAudioPreferences from 'vital-components/withAudioPreferences';
-import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
 import GeolocationModel from 'vital-models/GeolocationModel';
 import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
 import MetricDisplay from 'vital-components/MetricDisplay';
 import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
 import Progress from 'vital-components/Progress';
 import ActionButton from 'vital-components/ActionButton';
-import { withModel } from 'vital-components/ModelProvider';
+import { withModel, modelApiShape } from 'vital-components/ModelProvider';
+import MediaFileFactory from 'vital-models/MediaFileFactory';
+import { clamp, calculateBoostRate, getPlaybackRate } from 'vital-utils/mathUtils';
+
+const mediaFileFactory = new MediaFileFactory();
 
 // TODO: Move to standalone component and remove inline styles
 const LayoutRow = (props) => (
@@ -21,15 +22,6 @@ const LayoutRow = (props) => (
     </div>
   </PageWidthContainer>
 );
-
-import MediaFileFactory from 'vital-models/MediaFileFactory';
-
-// TODO: Move to utils file
-const clamp = (value, min, max) => {
-  const clampLower = Math.max(value, min);
-  const clampUpper = Math.min(clampLower, max);
-  return clampUpper;
-};
 
 // TODO: Change name to 'Visualization' or similar
 import Visualiser from 'vital-components/App';
@@ -69,19 +61,11 @@ class WorkOutPage extends React.Component {
     this.updateMusicOnGeolocationChange = this.updateMusicOnGeolocationChange.bind(this);
   }
 
-  getPlaybackRate() {
-    const currentMPH = geolocationModel.getCurrentMilesPerHour();
-    const { targetMPH, maxSpeed, minSpeed } = this.props.model;
-
-    return clamp(
-      (currentMPH / targetMPH) * maxSpeed,
-      minSpeed,
-      maxSpeed
-    );
-  }
-
   componentWillReceiveProps(newProps) {
-    this.audioSource.playbackRate.value = newProps.playbackRate;
+    this.loadAudio();
+    this.audioSource.playbackRate.value = getPlaybackRate(
+      newProps.model
+    );
   }
 
   updateMusicOnGeolocationChange() {
@@ -106,15 +90,22 @@ class WorkOutPage extends React.Component {
     if (this.audioSource) {
       this.audioSource.stop();
     }
+    this.props.updateModel('currentMPH', 0);
   }
 
-  loadAudio() {
-    getAudioDataSource(this.audioContext, this.props.songUrl).then(
+  async loadAudio() {
+    const song = mediaFileFactory.getMediaFile(this.props.model.songId);
+    const songUrl = await song.getStreamingUrl();
+
+    getAudioDataSource(this.audioContext, songUrl).then(
       (audioSource) => {
         if (audioSource.buffer) {
-          this.audioSource = audioSource;
-          this.audioSource.playbackRate.value = this.props.model.playbackRate;
-          this.forceUpdate();
+          if (this.mounted) {
+            this.audioSource = audioSource;
+            this.audioSource.start();
+            this.audioSource.playbackRate.value = this.props.model.playbackRate;
+            this.forceUpdate();
+          }
         } else {
           this.props.history.push('/error/music-load');
         }
@@ -126,9 +117,6 @@ class WorkOutPage extends React.Component {
 
     this.loadAudio();
     this.updateMusicOnGeolocationChange();
-  }
-  componentWillReceiveProps() {
-    this.loadAudio();
   }
   render() {
     if (!this.audioSource) {
@@ -150,12 +138,9 @@ class WorkOutPage extends React.Component {
       textAlign: 'center'
     };
 
-    const percentProgress = Math.round(
-      clamp(
-        (this.props.model.playbackRate / this.props.model.maxSpeed) * 100,
-        0,
-        100
-      )
+    const percentProgress = calculateBoostRate(
+      this.props.model.currentMPH,
+      this.props.model.targetMPH
     );
 
     return (
@@ -214,11 +199,8 @@ WorkOutPage.propTypes = {
     maxSpeed: PropTypes.number.isRequired,
     playbackRate: PropTypes.number.isRequired
   }),
-  updateModel: PropTypes.func.isRequired,
-  songUrl: PropTypes.string.isRequired
+  updateModel: PropTypes.func.isRequired
   // TODO: Define other props
 };
 
-export default withAudioPreferences(
-  withModel(WorkOutPage)
-);
+export default withModel(WorkOutPage);

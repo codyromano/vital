@@ -2,53 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Form from 'vital-components/Form';
 import { withRouter } from 'react-router-dom';
+import { withModel, modelApiShape } from 'vital-components/ModelProvider';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
 import fieldsDefinition from './formDefinition';
 import './ConfigureMusicPage.scss';
-import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
-
-const mapFieldIdToModelUpdateMethod = {
-  'song': sharedMusicPreferencesModel.updateSongSource,
-  'maxSpeed': sharedMusicPreferencesModel.updateSongMaximumSpeed,
-  'minSpeed': sharedMusicPreferencesModel.updateSongMinimumSpeed
-};
 
 class ConfigureMusicPage extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.onUpdateFieldValue = this.onUpdateFieldValue.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-  onSubmit(event) {
-    (event && event.preventDefault());
-    this.props.history.push('/configure-stats');
-  }
-  onUpdateFieldValue(fieldId, fieldValue) {
-    const updateFn = mapFieldIdToModelUpdateMethod[fieldId];
-    updateFn.call(sharedMusicPreferencesModel, fieldValue);
-
-    if (fieldId === 'song') {
-      this.onSubmit();
+  static propTypes = {
+    ...modelApiShape
+  };
+  componentWillReceiveProps(newProps) {
+    if (newProps.model.song) {
+      this.props.history.push('/configure-stats');
     }
-  }
-  componentDidMount() {
-  }
-  componentWillUnmount() {
-    delete this.mapFieldIdToModelUpdateMethod;
   }
   render() {
     return (
       <BasePage>
         <PageWidthContainer>
-          <Form
-            fields={fieldsDefinition}
-            onSubmit={this.onSubmit}
-            onUpdateFieldValue={this.onUpdateFieldValue}
-          />
+          <Form fields={fieldsDefinition} />
         </PageWidthContainer>
       </BasePage>
     );
   }
 }
 
-export default withRouter(ConfigureMusicPage);
+export default withRouter(
+  withModel(ConfigureMusicPage)
+);

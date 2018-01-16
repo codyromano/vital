@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './FormField.scss';
+import { withModel } from 'vital-components/ModelProvider';
 
 const FormField = ({
+  id,
   label,
   options,
   optionComponent,
   optionComponentProps,
-  onUpdateValue
+  updateModel,
+  model
 }) => {
   const FieldOptionComponent = optionComponent;
 
@@ -17,15 +20,17 @@ const FormField = ({
       </legend>
       {optionComponentProps.map((optionProps, index) => (
         <FieldOptionComponent
+          id={id}
           key={index}
+          ownModelValue={model[id]}
+          updateModel={updateModel}
           {...optionProps}
-          onUpdateValue={onUpdateValue}
         />
       ))}
   </fieldset>)
 };
 
-export default FormField;
+export default withModel(FormField);
 
 export const fieldShape = PropTypes.shape({
   id: PropTypes.string.isRequired,

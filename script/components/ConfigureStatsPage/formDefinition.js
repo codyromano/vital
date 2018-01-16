@@ -10,10 +10,12 @@ export default [
     optionComponentProps: [
       {
         metricLabel: '% faster than normal',
-        min: 0,
-        max: 100,
-        value: 50,
-        step: 10
+        min: 1,
+        max: 2,
+        step: .25,
+        formatMetric(value) {
+          return (value - 1) * 100;
+        }
       }
     ]
   },

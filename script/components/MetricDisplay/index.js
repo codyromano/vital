@@ -11,7 +11,6 @@ const MetricDisplay = ({
   precision
 }) => {
   if (typeof metric === 'number') {
-    metric = Math.min(metric, 99.99);
     metric = metric.toFixed(precision);
   }
   const classList = [

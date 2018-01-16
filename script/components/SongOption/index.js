@@ -5,11 +5,12 @@ import ActionButton from 'vital-components/ActionButton';
 import AudioPreviewButton from 'vital-components/AudioPreviewButton';
 
 const SongOption = ({
+  id,
   optionId,
   source,
   name,
   title,
-  onUpdateValue,
+  updateModel,
   selected,
   previewUrl
 }) => {
@@ -22,7 +23,7 @@ const SongOption = ({
           <AudioPreviewButton songUrl={previewUrl} />
         </li>
         <li className="song-button-list-item">
-          <ActionButton onClick={event => onUpdateValue({ optionId, source })}>
+          <ActionButton onClick={event => updateModel(id, optionId)}>
             Select
           </ActionButton>
         </li>

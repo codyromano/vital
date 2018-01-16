@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MetricDisplay from 'vital-components/MetricDisplay';
+import { modelApiShape } from 'vital-components/ModelProvider';
+import { clamp } from 'vital-utils/mathUtils';
 import './Range.scss';
 
 export default class Range extends React.Component {
@@ -12,64 +14,52 @@ export default class Range extends React.Component {
 		},
 		onChange: () => {},
 		step: 25,
-		precision: 0
+		precision: 0,
+		formatMetric: (value) => value
 	};
 
 	static propTypes = {
 		inputSettings: PropTypes.shape({
 			min: PropTypes.number,
-			max: PropTypes.number,
-			value: PropTypes.number
+			max: PropTypes.number
 		}),
 		onChange: PropTypes.func,
 		step: PropTypes.number,
-		precision: PropTypes.number
+		precision: PropTypes.number,
+		formatMetric: PropTypes.func,
+		...modelApiShape
 	};
 
 	constructor(props, context) {
 		super(props, context);
 
-		this.state = {
-			value: props.value
-		};
-
-		this.increase = this.increase.bind(this);
-		this.decrease = this.decrease.bind(this);
+		this.increase = this.adjustValue.bind(this, props.step);
+		this.decrease = this.adjustValue.bind(this, -props.step);
 	}
 
-	increase(event) {
+	adjustValue(step, event) {
 		event.preventDefault();
-		const newValue = Math.min(
-			this.state.value + this.props.step,
+		const newValue = clamp(
+			this.props.ownModelValue + step,
+			this.props.min,
 			this.props.max
 		);
-		this.setState({
-			value: newValue
-		});
-		this.props.onUpdateValue(newValue);
-	}
-
-	decrease(event) {
-		event.preventDefault();
-		const newValue = Math.max(
-			this.state.value - this.props.step,
-			this.props.min
-		);
-		this.setState({
-			value: newValue
-		});
-		this.props.onUpdateValue(newValue);
+		this.props.updateModel(this.props.id, newValue);
 	}
 
 	render() {
-		const isMinimum = this.state.value === this.props.min;
-		const isMaximum = this.state.value === this.props.max;
+		const isMinimum = this.props.ownModelValue === this.props.min;
+		const isMaximum = this.props.ownModelValue === this.props.max;
 
 		const minClass = ['metric-range-button'];
 		(isMinimum && minClass.push('metric-range-button-hidden'));
 
 		const maxClass = ['metric-range-button'];
 		(isMaximum && maxClass.push('metric-range-button-hidden'));
+
+		const formattedMetric = this.props.formatMetric(
+			this.props.ownModelValue
+		);
 
 		return (
 			<div className="metric-range">
@@ -80,7 +70,7 @@ export default class Range extends React.Component {
 
 				<div className="metric-display-range-wrapper">
 					<MetricDisplay
-						metric={this.state.value}
+						metric={formattedMetric}
 						precision={this.props.precision}
 						size={'large'}
 						unit={this.props.metricLabel}
@@ -93,15 +83,5 @@ export default class Range extends React.Component {
 				>+</button>
 			</div>
 		);
-		/*
-		return (
-			<input
-				onChange={({ target }) => this.props.onUpdateValue(target.value) }
-				type="range"
-				className="range"
-				{...this.props.inputSettings}
-			/>
-		);
-		*/
 	}
 }

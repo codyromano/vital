@@ -5,14 +5,6 @@ import SoundAnalyserCanvas from 'vital-components/SoundAnalyserCanvas';
 import './App.scss';
 
 export default class App extends React.Component {
-  componentDidMount() {
-    this.props.audioSource.start();
-    this.props.audioSource.frequency = 1000;
-  }
-  componentWillUnmount() {
-    this.props.audioSource.stop();
-    delete this.changeSpeed;
-  }
   render() {
     return (
       <div className="sound-canvas-wrapper">

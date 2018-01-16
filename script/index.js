@@ -13,8 +13,11 @@ const hydrateModel = () => Promise.resolve({
   currentMPH: 0,
   targetMPH: 13,
   minSpeed: 0.20,
+  // 50% faster than normal
   maxSpeed: 1.25,
-  playbackRate: 0.20
+  playbackRate: 0.20,
+  // Default song info
+  songId: 'bassnectar'
 });
 
 const AppWithRouter = () => (

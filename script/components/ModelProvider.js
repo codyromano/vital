@@ -38,12 +38,15 @@ class ModelProvider extends React.Component {
   }
 
   updateModel(key, value) {
+    console.log(key, value);
+
     const newModel = {
       ...this.model,
       [key]: value
     };
     this.model = newModel;
-    return this.persistModel(model);
+    this.forceUpdate();
+    return this.persistModel(newModel);
   }
 
   persistModel() {
@@ -55,6 +58,7 @@ class ModelProvider extends React.Component {
       const newModel = {...newData, ...this.model};
       this.hydrated = true;
       this.model = newModel;
+      this.forceUpdate();
     });
   }
 
