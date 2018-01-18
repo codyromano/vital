@@ -10,6 +10,12 @@ import './ConfigureStatsPage.scss';
 import { sharedMusicPreferencesModel } from 'vital-models/MusicPreferencesModel';
 
 class ConfigureStatsPage extends React.Component {
+  static propTypes = {
+    model: PropTypes.shape({
+      song: PropTypes.string
+    }).isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
     this.onSubmit = this.onSubmit.bind(this);
@@ -17,8 +23,7 @@ class ConfigureStatsPage extends React.Component {
   onSubmit(event) {
     (event && event.preventDefault());
 
-    const songId = sharedMusicPreferencesModel.getSongId();
-    const songPageUrl = `/work-out/${songId}`;
+    const songPageUrl = `/work-out/${this.props.model.song}`;
     this.props.history.push(songPageUrl);
   }
   render() {

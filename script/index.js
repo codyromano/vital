@@ -10,7 +10,7 @@ import IntroPage from 'vital-components/IntroPage';
 import ModelProvider from 'vital-components/ModelProvider';
 
 const hydrateModel = () => Promise.resolve({
-  currentMPH: 0,
+  // currentMPH: 0,
   targetMPH: 13,
   minSpeed: 0.20,
   // 50% faster than normal
@@ -28,6 +28,7 @@ const AppWithRouter = () => (
         <Route path="/configure-music" exact={true} component={ConfigureMusicPage} />
         <Route path="/configure-stats" exact={true} component={ConfigureStatsPage} />
         <Route path="/work-out/:songId" exact={true} component={WorkOutPage} />
+        <Route path="/work-out/:songId/mock" exact={true} component={WorkOutPage} />
         <Route path="/" component={IntroPage} />
       </Switch>
     </HashRouter>

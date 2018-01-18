@@ -5,13 +5,17 @@ export const clamp = (value, min, max) => {
   return value;
 };
 
-export const calculateBoostRate = (
-  currentMPH,
-  targetMPH
-) => {
-  const result = Math.min(100, (currentMPH / targetMPH)).toPrecision(1);
-  return isNaN(result) ? 0 : parseFloat(result);
-}
+export const getPercentProgress = (current, max) => {
+  const numerator = Math.min(current, max);
+  const denomerator = max;
+
+  return Math.round((numerator / denomerator) * 100);
+};
+
+export const convertSensorSpeedToMilesPerHour = (metersPerSecond) => {
+  const milesPerSecond = metersPerSecond * 0.000621371;
+  return milesPerSecond * 60 * 60;
+};
 
 export const getPlaybackRate = ({
   targetMPH, currentMPH, maxSpeed, minSpeed
@@ -26,6 +30,5 @@ export const getPlaybackRate = ({
     console.warn('Calculated playback rate is not a number');
     return 0;
   }
-  console.log('Calculated playback rate: ', result);
   return result;
 }

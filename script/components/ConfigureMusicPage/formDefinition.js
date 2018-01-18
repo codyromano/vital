@@ -9,11 +9,19 @@ export default [
     optionComponent: SongOption,
     optionComponentProps: [
       {
+        optionId: 'audien',
+        name: 'songOption',
+        title: 'Audien',
+        source: 'DEPRECATED-REMOVE-THIS-PROPERTY',
+        selected: true,
+        previewUrl: 'https://storage.cloud.google.com/databassio/audien.mp3'
+      },
+      {
         optionId: 'bassnectar',
         name: 'songOption',
         title: 'Bassnectar',
         source: 'DEPRECATED-REMOVE-THIS-PROPERTY',
-        selected: true,
+        selected: false,
         previewUrl: 'https://storage.cloud.google.com/databassio/bassnectar.mp3?authuser=0'
       },
       {

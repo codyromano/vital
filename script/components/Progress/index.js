@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Progress.scss';
+import { clamp } from 'vital-utils/mathUtils';
 
 const Progress = ({
   label,
@@ -11,6 +12,11 @@ const Progress = ({
   barColor
 }) => {
 
+  if (max < min || min > max) {
+    throw new Error(`min/max progress props out of bounds`);
+  }
+
+  value = clamp(value, min, max);
   const width = `${Math.round((value / max) * 100)}%`;
 
   return (
@@ -47,14 +53,3 @@ Progress.propTypes = {
 };
 
 export default Progress;
-
-/*
-        <Progress
-          label="Sound intensity"
-          min={0}
-          max={100}
-          value={0}
-          backgroundColor="#fff"
-          barColor="aqua"
-        />
-*/

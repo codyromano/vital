@@ -7,12 +7,9 @@ export default class GeolocationModel extends BaseModel {
   constructor() {
     super();
     this.coordinates = [];
-    // Delete coordinates older than n seconds for performance and UX reasons.
-    // Current MPH should be based only on the user's *recent* workout speed.
-    this.coordsMaxAgeSeconds = 45;
 
-    // Clean up stale data points to improve performance
-    window.setInterval(() => this.deleteStaleCoordinates(), 10000);
+    // Current MPH should be based only on the user's *recent* workout speed.
+    this.coordsMaxAgeSeconds = 10;
   }
 
   addLocation({ latitude, longitude }) {
@@ -26,19 +23,6 @@ export default class GeolocationModel extends BaseModel {
   isStaleCoordinate(coord) {
     const currentTime = new Date().getTime();
     return currentTime - coord.time >= this.coordsMaxAgeSeconds * 1000;
-  }
-
-  deleteStaleCoordinates() {
-    let index = 0;
-
-    for (const coords of this.coordinates) {
-      if (this.isStaleCoordinate(coords)) {
-        delete this.coordinates[index];
-        index+= 1;
-      } else {
-        break;
-      }
-    }
   }
 
   _getMilesPerHourEstimateFromCoordPair(coordsA, coordsB) {

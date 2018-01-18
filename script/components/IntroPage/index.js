@@ -26,7 +26,7 @@ export default class IntroPage extends React.Component {
 
         <div className="intro-content full-screen">
           <PageWidthContainer>
-            <h1 class="logo">DataBass</h1>
+            <h1 className="logo">DataBass</h1>
 
             <p>DataBass increases the intensity of your workout
             music according to your performance.</p>

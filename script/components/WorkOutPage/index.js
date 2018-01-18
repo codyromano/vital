@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
-import GeolocationModel from 'vital-models/GeolocationModel';
+import { withGeolocation } from 'vital-components/GeolocationProvider/index';
+import MockGeolocationService from 'vital-components/GeolocationProvider/MockGeolocationService';
 import { getDecodedAudioDataFromUrl, connectNewBufferSource } from 'vital-utils/audioUtils';
 import MetricDisplay from 'vital-components/MetricDisplay';
 import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
@@ -10,7 +11,7 @@ import Progress from 'vital-components/Progress';
 import ActionButton from 'vital-components/ActionButton';
 import { withModel, modelApiShape } from 'vital-components/ModelProvider';
 import MediaFileFactory from 'vital-models/MediaFileFactory';
-import { clamp, calculateBoostRate, getPlaybackRate } from 'vital-utils/mathUtils';
+import { clamp, getPlaybackRate, getPercentProgress } from 'vital-utils/mathUtils';
 
 const mediaFileFactory = new MediaFileFactory();
 
@@ -34,66 +35,41 @@ async function getAudioDataSource(audioContext, sourceUrl) {
   return connectNewBufferSource(audioContext, audioData);
 }
 
-// TODO: Let listeners unsubscribe
-function onGeolocationChange(callback) {
-  const onGeolocationSuccess = (position) => {
-    const { latitude, longitude } = position.coords;
-    callback(latitude, longitude);
-  };
-
-  const onGeolocationError = (...errorArgs) => {
-    console.error('Error determining geoposition. ', errorArgs);
-  };
-
-  window.navigator.geolocation.watchPosition(
-    onGeolocationSuccess,
-    onGeolocationError
-  );
-}
-
-const geolocationModel = new GeolocationModel();
-
 class WorkOutPage extends React.Component {
+  static propTypes = {
+    geolocation: PropTypes.shape({
+      currentMPH: PropTypes.number
+    }).isRequired
+  };
+
   constructor(props, context) {
     super(props, context);
     this.audioContext = new (AudioContext || webkitAudioContext)();
     this.audioSource = null;
-    this.updateMusicOnGeolocationChange = this.updateMusicOnGeolocationChange.bind(this);
+
+    // TODO: WorkOutPage shouldn't own this
+    // Reset mock location service
+    MockGeolocationService._coords.speed = 0;
   }
 
   componentWillReceiveProps(newProps) {
-    this.audioSource.playbackRate.value = getPlaybackRate(
-      newProps.model
-    );
-  }
-
-  updateMusicOnGeolocationChange() {
-    onGeolocationChange((latitude, longitude) => {
-      // TODO: Provide the audio source via an HOC so that WorkOutPage
-      // doesn't have to wait for it.
-      if (!this.audioSource) {
-        console.warn('Waiting for audio source');
-        return;
-      }
-      geolocationModel.addLocation({ latitude, longitude });
-      this.props.updateModel(
-        'currentMPH',
-        geolocationModel.getCurrentMilesPerHour()
-      );
-    });
+    if (this.audioSource) {
+      this.audioSource.playbackRate.value = getPlaybackRate({
+        ...newProps.model,
+        currentMPH: this.props.geolocation.currentMPH
+      });
+    }
   }
 
   componentWillUnmount() {
     this.mounted = false;
-
     if (this.audioSource) {
       this.audioSource.stop();
     }
-    this.props.updateModel('currentMPH', 0);
   }
 
   async loadAudio() {
-    const song = mediaFileFactory.getMediaFile(this.props.model.songId);
+    const song = mediaFileFactory.getMediaFile(this.props.match.params.songId);
     const songUrl = await song.getStreamingUrl();
 
     getAudioDataSource(this.audioContext, songUrl).then(
@@ -113,9 +89,7 @@ class WorkOutPage extends React.Component {
   }
   componentDidMount() {
     this.mounted = true;
-
     this.loadAudio();
-    this.updateMusicOnGeolocationChange();
   }
   render() {
     if (!this.audioSource) {
@@ -137,10 +111,13 @@ class WorkOutPage extends React.Component {
       textAlign: 'center'
     };
 
-    const percentProgress = calculateBoostRate(
-      this.props.model.currentMPH,
-      this.props.model.targetMPH
-    );
+    const currentMPH = this.props.geolocation.currentMPH;
+    const { targetMPH } = this.props.model;
+    const percentProgress = getPercentProgress(currentMPH, targetMPH);
+
+    const primaryHelpText = this.props.geolocation.speed === null ?
+      `Your device doesn't have a speed sensor or it's disabled.` :
+      `Move faster to boost your music.`;
 
     return (
       <div>
@@ -149,15 +126,15 @@ class WorkOutPage extends React.Component {
           audioSource={this.audioSource}
         />
         <PageWidthContainer>
-          <p style={paragraphStyles}>Move faster to boost your music.</p>
+          <p style={paragraphStyles}>{primaryHelpText}</p>
         </PageWidthContainer>
 
         <LayoutRow>
           <Progress
             label={`Boost level: ${percentProgress}%`}
             min={0}
-            max={100}
-            value={percentProgress}
+            max={targetMPH}
+            value={currentMPH}
             backgroundColor="#fff"
             barColor="#1abc9c"
           />
@@ -166,13 +143,13 @@ class WorkOutPage extends React.Component {
         <LayoutRow>
           <div className="metric-group">
             <MetricDisplay
-              metric={this.props.model.currentMPH}
+              metric={currentMPH}
               precision={1}
               unit={'current MPH'}
               size={'large'}
             />
             <MetricDisplay
-              metric={this.props.model.targetMPH}
+              metric={targetMPH}
               precision={1}
               unit={'target MPH'}
               size={'large'}
@@ -191,8 +168,12 @@ class WorkOutPage extends React.Component {
 }
 
 WorkOutPage.propTypes = {
+  geolocation: PropTypes.shape({
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    speed: PropTypes.number
+  }),
   model: PropTypes.shape({
-    currentMPH: PropTypes.number.isRequired,
     targetMPH: PropTypes.number.isRequired,
     minSpeed: PropTypes.number.isRequired,
     maxSpeed: PropTypes.number.isRequired,
@@ -202,4 +183,14 @@ WorkOutPage.propTypes = {
   // TODO: Define other props
 };
 
-export default withModel(WorkOutPage);
+let geolocationProviderOptions = {};
+
+if (window.location.href.includes('mock')) {
+  geolocationProviderOptions = {
+    geolocationProvider: MockGeolocationService
+  };
+}
+
+export default withGeolocation(geolocationProviderOptions)(
+  withModel(WorkOutPage)
+);
