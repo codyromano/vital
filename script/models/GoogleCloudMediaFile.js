@@ -3,7 +3,8 @@ import BaseMediaFile from 'vital-models/BaseMediaFile';
 // TODO: Create a microservice to provide song metadata
 const mapMediaFileIdToBucketFileName = {
   'bassnectar': 'bassnectar.mp3',
-  'martin-garrix-animals': 'martin-garrix-animals.mp3'
+  'martin-garrix-animals': 'martin-garrix-animals.mp3',
+  'audien': 'audien.mp3'
 };
 
 export default class GoogleCloudMediaFile extends BaseMediaFile {
