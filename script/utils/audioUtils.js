@@ -39,7 +39,7 @@ export async function getDecodedAudioDataFromUrl(audioContext, url) {
 
 export function connectNewBufferSource(audioContext, decodedAudioArrayBuffer) {
   const source = audioContext.createBufferSource();
-  source.playbackRate.value = 0.75;
+  source.playbackRate.value = 0;
   source.buffer = decodedAudioArrayBuffer;
 
   source.connect(audioContext.destination);

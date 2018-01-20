@@ -11,7 +11,7 @@ import Progress from 'vital-components/Progress';
 import ActionButton from 'vital-components/ActionButton';
 import { withModel, modelApiShape } from 'vital-components/ModelProvider';
 import MediaFileFactory from 'vital-models/MediaFileFactory';
-import { clamp, getPlaybackRate, getPercentProgress } from 'vital-utils/mathUtils';
+import { clamp, PlaybackRateCalculator, getPercentProgress } from 'vital-utils/mathUtils';
 
 const mediaFileFactory = new MediaFileFactory();
 
@@ -46,6 +46,7 @@ class WorkOutPage extends React.Component {
     super(props, context);
     this.audioContext = new (AudioContext || webkitAudioContext)();
     this.audioSource = null;
+    this.playbackRateCalculator = new PlaybackRateCalculator();
 
     // TODO: WorkOutPage shouldn't own this
     // Reset mock location service
@@ -54,10 +55,11 @@ class WorkOutPage extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (this.audioSource) {
-      this.audioSource.playbackRate.value = getPlaybackRate({
+      const newRate = this.playbackRateCalculator.getRate({
         ...newProps.model,
         currentMPH: this.props.geolocation.currentMPH
       });
+      this.audioSource.playbackRate.value = newRate;
     }
   }
 

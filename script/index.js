@@ -15,7 +15,7 @@ const hydrateModel = () => Promise.resolve({
   minSpeed: 0.20,
   // 50% faster than normal
   maxSpeed: 1.25,
-  playbackRate: 0.40,
+  playbackRate: 0,
   // Default song info
   songId: 'bassnectar'
 });
