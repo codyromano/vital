@@ -4,7 +4,7 @@ import Form from 'vital-components/Form';
 import { withRouter } from 'react-router-dom';
 import { withModel, modelApiShape } from 'vital-components/ModelProvider';
 import BasePage, { PageWidthContainer } from 'vital-components/BasePage';
-import fieldsDefinition from './formDefinition';
+import getFieldsDefinition from './formDefinition';
 import './ConfigureMusicPage.scss';
 
 class ConfigureMusicPage extends React.Component {
@@ -20,7 +20,7 @@ class ConfigureMusicPage extends React.Component {
     return (
       <BasePage>
         <PageWidthContainer>
-          <Form fields={fieldsDefinition} />
+          <Form fields={getFieldsDefinition(this.props.model.songs)} />
         </PageWidthContainer>
       </BasePage>
     );

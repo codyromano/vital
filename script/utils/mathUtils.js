@@ -45,7 +45,6 @@ export class PlaybackRateCalculator {
     minSpeed
   }) {
     if (this.cachedPlaybackRateIsValid()) {
-      console.log('using cached: ', this.cachedPlaybackRate);
       return this.cachedPlaybackRate;
     }
 
@@ -62,7 +61,6 @@ export class PlaybackRateCalculator {
 
     this.timePlaybackRateLastCalculated = new Date().getTime();
     this.cachedPlaybackRate = result;
-    console.log('using new: ', this.cachedPlaybackRate);
 
     return result;
   }

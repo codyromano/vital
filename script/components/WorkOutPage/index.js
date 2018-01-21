@@ -10,10 +10,7 @@ import LoadProgressIndicator from 'vital-components/LoadProgressIndicator';
 import Progress from 'vital-components/Progress';
 import ActionButton from 'vital-components/ActionButton';
 import { withModel, modelApiShape } from 'vital-components/ModelProvider';
-import MediaFileFactory from 'vital-models/MediaFileFactory';
 import { clamp, PlaybackRateCalculator, getPercentProgress } from 'vital-utils/mathUtils';
-
-const mediaFileFactory = new MediaFileFactory();
 
 // TODO: Move to standalone component and remove inline styles
 const LayoutRow = (props) => (
@@ -71,10 +68,19 @@ class WorkOutPage extends React.Component {
   }
 
   async loadAudio() {
-    const song = mediaFileFactory.getMediaFile(this.props.match.params.songId);
-    const songUrl = await song.getStreamingUrl();
+    // const song = mediaFileFactory.getMediaFile(this.props.match.params.songId);
+    const songInfo = this.props.model.songs.filter(song =>
+      song.id === this.props.match.params.songId
+    )[0];
 
-    getAudioDataSource(this.audioContext, songUrl).then(
+    if (!songInfo) {
+      console.error(`Song ID in URL doesn't match any
+        songs loaded from the media API.`);
+      this.props.history.push('/error/music-load');
+      return;
+    }
+
+    getAudioDataSource(this.audioContext, songInfo.mediaLink).then(
       (audioSource) => {
         if (audioSource.buffer) {
           if (this.mounted) {

@@ -9,16 +9,23 @@ import ErrorPage from 'vital-components/ErrorPage';
 import IntroPage from 'vital-components/IntroPage';
 import ModelProvider from 'vital-components/ModelProvider';
 
-const hydrateModel = () => Promise.resolve({
-  // currentMPH: 0,
-  targetMPH: 13,
-  minSpeed: 0.20,
-  // 50% faster than normal
-  maxSpeed: 1.25,
-  playbackRate: 0,
-  // Default song info
-  songId: 'bassnectar'
-});
+async function hydrateModel() {
+  const initialModel = {
+    targetMPH: 13,
+    minSpeed: 0.20,
+    // 25% faster than normal
+    maxSpeed: 1.25,
+    playbackRate: 0,
+    // Default song info
+    songId: 'bassnectar'
+  };
+
+  const songs = await window.fetch('https://databass.io/media-api/list-songs')
+    .then(response => response.json());
+
+  initialModel.songs = songs;
+  return initialModel;
+}
 
 const AppWithRouter = () => (
   <ModelProvider hydrate={hydrateModel}>
